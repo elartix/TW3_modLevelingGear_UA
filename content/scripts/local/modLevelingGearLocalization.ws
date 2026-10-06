@@ -1,15 +1,15 @@
 /***********************************************************************/
 /** 	Leveling Gear (Update 5.0 Remastered & Next-Gen)
-/** 	Universal 16-Language Native Script Localization Engine
+/** 	Universal 17-Language Native Script Localization Engine
 /***********************************************************************/
 
 function ModLevelingGear_NormalizeKey(key : string) : string
 {
 	var k : string = key;
 
-	if ( StrBeginsWith(k, "preset_value_mlgInstalledVersion") || StrBeginsWith(k, "option_mlgInstalledVersion") || k == "mlgInstalledVersion_0" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.10b" || k == "v1.0.7b" || k == "v1.0.7" || k == "v1.0.6" || k == "v1.0.5" || k == "v1.0.4" )
+	if ( StrBeginsWith(k, "preset_value_mlgInstalledVersion") || StrBeginsWith(k, "option_mlgInstalledVersion") || k == "mlgInstalledVersion_0" || k == "v1.0.14" || k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.10b" || k == "v1.0.7b" || k == "v1.0.7" || k == "v1.0.6" || k == "v1.0.5" || k == "v1.0.4" )
 	{
-		return "v1.0.13";
+		return "v1.0.14";
 	}
 
 	if ( StrBeginsWith(k, "option_") )
@@ -27,7 +27,7 @@ function ModLevelingGear_NormalizeKey(key : string) : string
 
 	// VarId aliases
 	if ( k == "mlgInstalledVersion" ) return "Installed Version";
-	if ( k == "preset_value_mlgInstalledVersion" || k == "mlgInstalledVersion_0" ) return "v1.0.13";
+	if ( k == "preset_value_mlgInstalledVersion" || k == "mlgInstalledVersion_0" ) return "v1.0.14";
 	if ( k == "mlgMasterEnabled" ) return "Enable Leveling Gear";
 	if ( k == "mlgGearScope" ) return "Gear Whitelist Scope";
 	if ( k == "mlgExcludeAerondight" ) return "Exclude Aerondight (Native Stacking)";
@@ -83,6 +83,7 @@ function ModLevelingGear_GetLoc_EN(k : string) : string
 	if ( k == "LevelingGear" ) return "Leveling Gear";
 	if ( k == "mod_leveling_gear" ) return "Leveling Gear";
 	if ( k == "Installed Version" ) return "Installed Version";
+	if ( k == "v1.0.14" ) return "v1.0.14";
 	if ( k == "v1.0.13" ) return "v1.0.13";
 	if ( k == "v1.0.13b" ) return "v1.0.13b";
 	if ( k == "v1.0.12" ) return "v1.0.12";
@@ -264,92 +265,6 @@ function ModLevelingGear_GetLoc_RU(k : string) : string
 	if ( k == "Repair Kit" ) return "Ремонтный набор";
 	if ( k == "Material" ) return "Материал";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Нормализация вторичных характеристик (восстановление при уровне)";
-	return "";
-}
-
-function ModLevelingGear_GetLoc_UA(k : string) : string
-{
-	if ( k == "Preset" ) return "Набір налаштувань";
-	if ( k == "Khser's Choice" ) return "Вибір Khser";
-	if ( k == "Story (Free)" ) return "Сюжет (безкоштовно)";
-	if ( k == "Hardcore" ) return "Хардкор";
-	if ( k == "Purist" ) return "Пурист";
-
-	if ( k == "Mods" ) return "Моди";
-	if ( k == "mods" ) return "Моди";
-	if ( k == "Mods.LevelingGear" ) return "Спорядження за рівнем";
-	if ( k == "LevelingGear" ) return "Спорядження за рівнем";
-	if ( k == "mod_leveling_gear" ) return "Спорядження за рівнем";
-	if ( k == "Leveling Gear" ) return "Спорядження за рівнем";
-
-	if ( k == "Installed Version" ) return "Встановлена версія";
-	if ( k == "v1.0.13" ) return "v1.0.13";
-	if ( k == "v1.0.13b" ) return "v1.0.13b";
-	if ( k == "v1.0.12" ) return "v1.0.12";
-	if ( k == "v1.0.11" ) return "v1.0.11";
-	if ( k == "v1.0.5" ) return "v1.0.5";
-	if ( k == "v1.0.4" ) return "v1.0.4";
-
-	if ( k == "Enable Leveling Gear" ) return "Увімкнути спорядження за рівнем";
-	if ( k == "Gear Whitelist Scope" ) return "Спорядження для покращення";
-	if ( k == "Exclude Aerondight (Native Stacking)" ) return "Виключити Аерондіт (вбудоване підсилення)";
-	if ( k == "Enable Crossbow Scaling" ) return "Підлаштовувати арбалети під рівень";
-	if ( k == "Auto-Scale Loot Drops" ) return "Автоматично підлаштовувати здобич під рівень";
-
-	if ( k == "Upgrade Trigger: At Craftsmen" ) return "Покращення: у ремісників";
-	if ( k == "Upgrade Trigger: At Craftsmen (Dialogue)" ) return "Покращення: у ремісників (діалог)";
-	if ( k == "Craftsman Upgrade Mode" ) return "Режим покращення у ремісників";
-	if ( k == "Craftsman Durability Repair Action" ) return "Ремонт міцності у ремісника";
-
-	if ( k == "Durability Repair Only (No Leveling)" ) return "Лише ремонт міцності (без підвищення рівня)";
-	if ( k == "Repair + Level Tempering (Combined)" ) return "Ремонт + підвищення рівня (разом)";
-	if ( k == "Temper Only When Pristine (100% Durability)" ) return "Підвищувати рівень лише за 100% міцності";
-
-	if ( k == "Upgrade Bagged Inventory Gear" ) return "Покращувати спорядження в інвентарі";
-	if ( k == "Upgrade Trigger: Via Field Maintenance Kit" ) return "Покращення: за допомогою польового набору";
-	if ( k == "Allow Field Kit on Pristine (100%) Gear" ) return "Дозволити польовий набір для спорядження зі 100% міцністю";
-
-	if ( k == "Upgrade Trigger: On Level-Up (Auto)" ) return "Покращення: при підвищенні рівня (авто)";
-	if ( k == "Upgrade Trigger: On Item Equip" ) return "Покращення: при екіпіруванні";
-
-	if ( k == "Downscale High-Level Gear to Player Level" ) return "Знижувати рівень спорядження до рівня гравця";
-	if ( k == "Downscale Cost Multiplier (0.0 = Free)" ) return "Множник вартості зниження рівня (0.0 = безкоштовно)";
-
-	if ( k == "Payment Currency" ) return "Валюта оплати";
-	if ( k == "Required Material for Upgrades" ) return "Необхідний матеріал для покращення";
-	if ( k == "Base Crown Cost per Level Difference" ) return "Базова вартість у кронах за різницю в рівні";
-
-	if ( k == "Cost Multiplier: Common / Magic" ) return "Множник вартості: звичайне / магічне";
-	if ( k == "Cost Multiplier: Relic / Rare" ) return "Множник вартості: реліктове / рідкісне";
-	if ( k == "Cost Multiplier: Witcher School" ) return "Множник вартості: спорядження відьмачих шкіл";
-
-	if ( k == "Show On-Screen HUD Notification" ) return "Показувати HUD-сповіщення на екрані";
-	if ( k == "Play Craftsman Anvil Sound Effect" ) return "Відтворювати звук ковадла ремісника";
-
-	if ( k == "All Gear (Vanilla and Modded)" ) return "Усе спорядження (оригінальне та з модів)";
-	if ( k == "Witcher and Relic Gear Only" ) return "Лише відьмаче та реліктове спорядження";
-	if ( k == "Witcher School Gear Only" ) return "Лише спорядження відьмачих шкіл";
-
-	if ( k == "Manual (One-by-One in Repair Tab)" ) return "Вручну (по одному у вкладці ремонту)";
-	if ( k == "Automatic (All Gear on Dialogue)" ) return "Автоматично (усе спорядження під час діалогу)";
-
-	if ( k == "Free (Zero Cost)" ) return "Безкоштовно (без витрат)";
-	if ( k == "Crowns Only" ) return "Лише крони";
-	if ( k == "Materials Only" ) return "Лише матеріали";
-	if ( k == "Crowns and Materials" ) return "Крони та матеріали";
-
-	if ( k == "Tempering Oil / Alchemical" ) return "Олія для покращення / алхімічний матеріал";
-	if ( k == "Weapon / Armor Repair Kit" ) return "Набір для ремонту зброї / обладунків";
-	if ( k == "Dimeritium Ingot" ) return "Злиток двимериту";
-	if ( k == "Meteorite Ore" ) return "Метеоритна руда";
-
-	if ( k == "Crowns" ) return "Крони";
-	if ( k == "Oil" ) return "Олія";
-	if ( k == "Repair Kit" ) return "Набір для ремонту";
-	if ( k == "Material" ) return "Матеріал";
-
-	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Нормалізувати додаткові характеристики (відновлювати при підвищенні рівня)";
-
 	return "";
 }
 
@@ -1119,6 +1034,75 @@ function ModLevelingGear_GetLoc_AR(k : string) : string
 	return "";
 }
 
+function ModLevelingGear_GetLoc_UA(k : string) : string
+{
+	if ( k == "Preset" ) return "Набір налаштувань";
+	if ( k == "Khser's Choice" ) return "Вибір Khser";
+	if ( k == "Story (Free)" ) return "Сюжет (безкоштовно)";
+	if ( k == "Hardcore" ) return "Хардкор";
+	if ( k == "Purist" ) return "Пурист";
+	if ( k == "Mods" ) return "Моди";
+	if ( k == "mods" ) return "Моди";
+	if ( k == "Mods.LevelingGear" ) return "Спорядження за рівнем";
+	if ( k == "LevelingGear" ) return "Спорядження за рівнем";
+	if ( k == "mod_leveling_gear" ) return "Спорядження за рівнем";
+	if ( k == "Leveling Gear" ) return "Спорядження за рівнем";
+	if ( k == "Installed Version" ) return "Встановлена версія";
+	if ( k == "v1.0.14" ) return "v1.0.14";
+	if ( k == "v1.0.13" ) return "v1.0.13";
+	if ( k == "v1.0.13b" ) return "v1.0.13b";
+	if ( k == "v1.0.12" ) return "v1.0.12";
+	if ( k == "v1.0.11" ) return "v1.0.11";
+	if ( k == "v1.0.5" ) return "v1.0.5";
+	if ( k == "v1.0.4" ) return "v1.0.4";
+	if ( k == "Enable Leveling Gear" ) return "Увімкнути спорядження за рівнем";
+	if ( k == "Gear Whitelist Scope" ) return "Спорядження для покращення";
+	if ( k == "Exclude Aerondight (Native Stacking)" ) return "Виключити Аерондіт (вбудоване підсилення)";
+	if ( k == "Enable Crossbow Scaling" ) return "Підлаштовувати арбалети під рівень";
+	if ( k == "Auto-Scale Loot Drops" ) return "Автоматично підлаштовувати здобич під рівень";
+	if ( k == "Upgrade Trigger: At Craftsmen" ) return "Покращення: у ремісників";
+	if ( k == "Upgrade Trigger: At Craftsmen (Dialogue)" ) return "Покращення: у ремісників (діалог)";
+	if ( k == "Craftsman Upgrade Mode" ) return "Режим покращення у ремісників";
+	if ( k == "Craftsman Durability Repair Action" ) return "Ремонт міцності у ремісника";
+	if ( k == "Durability Repair Only (No Leveling)" ) return "Лише ремонт міцності (без підвищення рівня)";
+	if ( k == "Repair + Level Tempering (Combined)" ) return "Ремонт + підвищення рівня (разом)";
+	if ( k == "Temper Only When Pristine (100% Durability)" ) return "Підвищувати рівень лише за 100% міцності";
+	if ( k == "Upgrade Bagged Inventory Gear" ) return "Покращувати спорядження в інвентарі";
+	if ( k == "Upgrade Trigger: Via Field Maintenance Kit" ) return "Покращення: за допомогою польового набору";
+	if ( k == "Allow Field Kit on Pristine (100%) Gear" ) return "Дозволити польовий набір для спорядження зі 100% міцністю";
+	if ( k == "Upgrade Trigger: On Level-Up (Auto)" ) return "Покращення: при підвищенні рівня (авто)";
+	if ( k == "Upgrade Trigger: On Item Equip" ) return "Покращення: при екіпіруванні";
+	if ( k == "Downscale High-Level Gear to Player Level" ) return "Знижувати рівень спорядження до рівня гравця";
+	if ( k == "Downscale Cost Multiplier (0.0 = Free)" ) return "Множник вартості зниження рівня (0.0 = безкоштовно)";
+	if ( k == "Payment Currency" ) return "Валюта оплати";
+	if ( k == "Required Material for Upgrades" ) return "Необхідний матеріал для покращення";
+	if ( k == "Base Crown Cost per Level Difference" ) return "Базова вартість у кронах за різницю в рівні";
+	if ( k == "Cost Multiplier: Common / Magic" ) return "Множник вартості: звичайне / магічне";
+	if ( k == "Cost Multiplier: Relic / Rare" ) return "Множник вартості: реліктове / рідкісне";
+	if ( k == "Cost Multiplier: Witcher School" ) return "Множник вартості: спорядження відьмачих шкіл";
+	if ( k == "Show On-Screen HUD Notification" ) return "Показувати HUD-сповіщення на екрані";
+	if ( k == "Play Craftsman Anvil Sound Effect" ) return "Відтворювати звук ковадла ремісника";
+	if ( k == "All Gear (Vanilla and Modded)" ) return "Усе спорядження (оригінальне та з модів)";
+	if ( k == "Witcher and Relic Gear Only" ) return "Лише відьмаче та реліктове спорядження";
+	if ( k == "Witcher School Gear Only" ) return "Лише спорядження відьмачих шкіл";
+	if ( k == "Manual (One-by-One in Repair Tab)" ) return "Вручну (по одному у вкладці ремонту)";
+	if ( k == "Automatic (All Gear on Dialogue)" ) return "Автоматично (усе спорядження під час діалогу)";
+	if ( k == "Free (Zero Cost)" ) return "Безкоштовно (без витрат)";
+	if ( k == "Crowns Only" ) return "Лише крони";
+	if ( k == "Materials Only" ) return "Лише матеріали";
+	if ( k == "Crowns and Materials" ) return "Крони та матеріали";
+	if ( k == "Tempering Oil / Alchemical" ) return "Олія для покращення / алхімічний матеріал";
+	if ( k == "Weapon / Armor Repair Kit" ) return "Набір для ремонту зброї / обладунків";
+	if ( k == "Dimeritium Ingot" ) return "Злиток двимериту";
+	if ( k == "Meteorite Ore" ) return "Метеоритна руда";
+	if ( k == "Crowns" ) return "Крони";
+	if ( k == "Oil" ) return "Олія";
+	if ( k == "Repair Kit" ) return "Набір для ремонту";
+	if ( k == "Material" ) return "Матеріал";
+	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Нормалізувати додаткові характеристики (відновлювати при підвищенні рівня)";
+	return "";
+}
+
 function ModLevelingGear_GetLoc_ZH(k : string) : string
 {
 	return ModLevelingGear_GetLoc_ZHTW(k);
@@ -1132,17 +1116,14 @@ function ModLevelingGear_GetLocalizedString(key : string) : string
 	var res : string;
 
 	k = ModLevelingGear_NormalizeKey(key);
-	if ( k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.10b" || k == "v1.0.7b" || k == "v1.0.7" || k == "v1.0.6" || k == "v1.0.5" || k == "v1.0.4" )
+	if ( k == "v1.0.14" || k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.10b" || k == "v1.0.7b" || k == "v1.0.7" || k == "v1.0.6" || k == "v1.0.5" || k == "v1.0.4" )
 	{
-		return "v1.0.13";
+		return "v1.0.14";
 	}
 	theGame.GetGameLanguageName(audioLang, textLang);
 	lang = StrUpper(textLang);
 
 	if ( lang == "TR" || StrBeginsWith(lang, "TUR") ) res = ModLevelingGear_GetLoc_TR(k);
-	
-	else if ( lang == "UA" || lang == "UK" || StrBeginsWith(lang, "UKR") ) res = ModLevelingGear_GetLoc_UA(k);
-	
 	else if ( lang == "RU" || StrBeginsWith(lang, "RUS") ) res = ModLevelingGear_GetLoc_RU(k);
 	else if ( lang == "PL" || StrBeginsWith(lang, "POL") ) res = ModLevelingGear_GetLoc_PL(k);
 	else if ( lang == "DE" || StrBeginsWith(lang, "GER") ) res = ModLevelingGear_GetLoc_DE(k);
@@ -1158,6 +1139,7 @@ function ModLevelingGear_GetLocalizedString(key : string) : string
 	else if ( lang == "CZ" || StrBeginsWith(lang, "CZE") ) res = ModLevelingGear_GetLoc_CZ(k);
 	else if ( lang == "HU" || StrBeginsWith(lang, "HUN") ) res = ModLevelingGear_GetLoc_HU(k);
 	else if ( lang == "AR" || StrBeginsWith(lang, "ARA") ) res = ModLevelingGear_GetLoc_AR(k);
+	else if ( lang == "UA" || lang == "UK" || StrBeginsWith(lang, "UKR") ) res = ModLevelingGear_GetLoc_UA(k);
 
 	// Chinese dialect cross-fallbacks
 	if ( (StrBeginsWith(lang, "ZH-TW") || StrBeginsWith(lang, "ZH_TW") || lang == "TW" || StrContains(lang, "TCHIN")) && res == "" )
@@ -1221,8 +1203,8 @@ function IngameMenu_FetchAndGenerateGroupMenuObject(flashStorageUtility : CScrip
 	{
 		modTitle = ModLevelingGear_GetLocalizedString("LevelingGear");
 		if ( modTitle == "" ) modTitle = "Leveling Gear";
-		obj.SetMemberFlashString("label", modTitle + " (v1.0.13)");
-		obj.SetMemberFlashString("listTitle", modTitle + " (v1.0.13)");
+		obj.SetMemberFlashString("label", modTitle + " (v1.0.14)");
+		obj.SetMemberFlashString("listTitle", modTitle + " (v1.0.14)");
 	}
 
 	return obj;
