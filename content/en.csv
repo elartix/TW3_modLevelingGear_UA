@@ -1,0 +1,335 @@
+;meta[language=en]
+; id      |key(hex)|key(str)| text
+2119990001|4D5F8B0C||Mods
+2119990002|B0222C27||Mods
+2119990003|4C3EED16||Mods
+2119990004|4D5F8B0C||Mods
+2119990005|B0222C27||Mods
+2119990006|4C3EED16||Mods
+2119990007|003339B1||Mods
+2119990008|EA9F6B3B||Mods
+2119990009|003339B1||Mods
+2119990010|EA9F6B3B||Mods
+2119990011|EF79518A||Leveling Gear
+2119990012|E06F4C0F||Leveling Gear
+2119990013|89B37040||Leveling Gear
+2119990014|5D04586D||Leveling Gear
+2119990015|19A31EC8||Leveling Gear
+2119990016|21935FF7||Leveling Gear
+2119990017|54ACFCD3||Leveling Gear
+2119990018|45A2F758||Leveling Gear
+2119990019|EEE71B89||Leveling Gear
+2119990020|B9C98C6F||Leveling Gear
+2119990021|AA966434||Leveling Gear
+2119990022|7A47E0A5||Leveling Gear
+2119990023|E3519439||Leveling Gear
+2119990024|489637EA||Leveling Gear
+2119990025|D71E8ED4||Leveling Gear
+2119990026|FDC90A45||Leveling Gear
+2119990027|844BD632||Installed Version
+2119990028|1E85F4E8||Installed Version
+2119990029|B85B8453||v1.0.24
+2119990030|527C7E25||v1.0.24
+2119990031|BCF46E89||v1.0.24
+2119990032|B85B8452||v1.0.24
+2119990033|527C7E24||v1.0.24
+2119990034|BCF46E88||v1.0.24
+2119990035|B85B8451||v1.0.24
+2119990036|527C7E23||v1.0.24
+2119990037|BCF46E87||v1.0.24
+2119990038|B85B8450||v1.0.24
+2119990039|527C7E22||v1.0.24
+2119990040|BCF46E86||v1.0.24
+2119990041|B85B844F||v1.0.24
+2119990042|527C7E21||v1.0.24
+2119990043|BCF46E85||v1.0.24
+2119990044|B85B8439||v1.0.24
+2119990045|527C7E0B||v1.0.24
+2119990046|BCF46E6F||v1.0.24
+2119990047|B85B8438||v1.0.18
+2119990048|527C7E0A||v1.0.18
+2119990049|BCF46E6E||v1.0.18
+2119990050|B85B8437||v1.0.17
+2119990051|527C7E09||v1.0.17
+2119990052|BCF46E6D||v1.0.17
+2119990053|B85B8436||v1.0.16
+2119990054|527C7E08||v1.0.16
+2119990055|BCF46E6C||v1.0.16
+2119990056|B85B8435||v1.0.15
+2119990057|527C7E07||v1.0.15
+2119990058|BCF46E6B||v1.0.15
+2119990059|B85B8434||v1.0.14
+2119990060|527C7E06||v1.0.14
+2119990061|BCF46E6A||v1.0.14
+2119990062|B85B8433||v1.0.13
+2119990063|527C7E05||v1.0.13
+2119990064|BCF46E69||v1.0.13
+2119990065|B85B8432||v1.0.12
+2119990066|527C7E04||v1.0.12
+2119990067|BCF46E68||v1.0.12
+2119990068|B85B8431||v1.0.11
+2119990069|527C7E03||v1.0.11
+2119990070|BCF46E67||v1.0.11
+2119990071|CC23FC08||v1.0.9
+2119990072|2BF37FF6||v1.0.9
+2119990073|CC49F312||v1.0.9
+2119990074|CC23FC07||v1.0.8
+2119990075|2BF37FF5||v1.0.8
+2119990076|CC49F311||v1.0.8
+2119990077|CC23FC06||v1.0.7
+2119990078|2BF37FF4||v1.0.7
+2119990079|CC49F310||v1.0.7
+2119990080|CC23FC05||v1.0.6
+2119990081|2BF37FF3||v1.0.6
+2119990082|CC49F30F||v1.0.6
+2119990083|CC23FC04||v1.0.5
+2119990084|2BF37FF2||v1.0.5
+2119990085|CC49F30E||v1.0.5
+2119990086|CC23FC03||v1.0.4
+2119990087|2BF37FF1||v1.0.4
+2119990088|CC49F30D||v1.0.4
+2119990089|36D01EB4||Enable Leveling Gear
+2119990090|C84BFC3E||Enable Leveling Gear
+2119990091|43B218AA||Gear Whitelist Scope
+2119990092|D52DF634||Gear Whitelist Scope
+2119990093|FD60D695||Exclude Aerondight (Native Stacking)
+2119990094|5914601F||Exclude Aerondight (Native Stacking)
+2119990095|F8CD5BEE||Enable Crossbow Scaling
+2119990096|16271A24||Enable Crossbow Scaling
+2119990097|C389C4E0||Auto-Scale Loot Drops
+2119990098|61899896||Auto-Scale Loot Drops
+2119990099|C07BADD0||Upgrade Trigger: At Craftsmen
+2119990100|BF9F6B86||Upgrade Trigger: At Craftsmen
+2119990101|19B7F679||Upgrade Trigger: At Craftsmen (Dialogue)
+2119990102|F617AB03||Upgrade Trigger: At Craftsmen (Dialogue)
+2119990103|48348A80||Craftsman Upgrade Mode
+2119990104|6A2F2D8A||Craftsman Upgrade Mode
+2119990105|54A3F62B||Craftsman Durability Repair Action
+2119990106|0DE05A35||Craftsman Durability Repair Action
+2119990107|4FA1E8F1||Upgrade Bagged Inventory Gear
+2119990108|4EC5A6A7||Upgrade Bagged Inventory Gear
+2119990109|ED034DC1||Upgrade Stash Gear (Player Chest)
+2119990110|14054077||Upgrade Stash Gear (Player Chest)
+2119990111|DF071F67||Upgrade Trigger: On Opening Stash Chest
+2119990112|40F9B19D||Upgrade Trigger: On Opening Stash Chest
+2119990113|17A851F7||Upgrade Trigger: Via Field Maintenance Kit
+2119990114|5AED0C01||Upgrade Trigger: Via Field Maintenance Kit
+2119990115|FD411534||Allow Field Kit on Pristine (100%) Gear
+2119990116|5F33A76A||Allow Field Kit on Pristine (100%) Gear
+2119990117|B0162267||Upgrade Trigger: On Level-Up (Auto)
+2119990118|1E663F9D||Upgrade Trigger: On Level-Up (Auto)
+2119990119|8FF20E2A||Upgrade Trigger: On Item Equip
+2119990120|75460734||Upgrade Trigger: On Item Equip
+2119990121|2933FA68||Downscale High-Level Gear to Player Level
+2119990122|D8CAD71E||Downscale High-Level Gear to Player Level
+2119990123|D14D7A5E||Normalize Secondary Stats (Restore on Level-Up)
+2119990124|6EFD7694||Normalize Secondary Stats (Restore on Level-Up)
+2119990125|B0A7EC28||Downscale Cost Multiplier (0.0 = Free)
+2119990126|ED9F3B32||Downscale Cost Multiplier (0.0 = Free)
+2119990127|6B0E84EB||Payment Currency
+2119990128|BA5AB775||Payment Currency
+2119990129|ACE5FFE6||Required Material for Upgrades
+2119990130|9239F8F0||Required Material for Upgrades
+2119990131|219CEAF7||Base Crown Cost per Level Difference
+2119990132|7D507481||Base Crown Cost per Level Difference
+2119990133|EE03A1E1||Cost Multiplier: Common / Magic
+2119990134|B32ECA17||Cost Multiplier: Common / Magic
+2119990135|4EF4E65A||Cost Multiplier: Relic / Rare
+2119990136|4E18A410||Cost Multiplier: Relic / Rare
+2119990137|36834AFA||Cost Multiplier: Witcher School
+2119990138|FBAE7330||Cost Multiplier: Witcher School
+2119990139|820BB7BD||Show On-Screen HUD Notification
+2119990140|4736DFF3||Show On-Screen HUD Notification
+2119990141|130D489B||Play Craftsman Anvil Sound Effect
+2119990142|3A0F3B51||Play Craftsman Anvil Sound Effect
+2119990143|9D74A324||All Gear (Vanilla and Modded)
+2119990144|FA549376||All Gear (Vanilla and Modded)
+2119990145|9C9860DA||All Gear (Vanilla and Modded)
+2119990146|1978BB7B||Witcher and Relic Gear Only
+2119990147|7FDC984D||Witcher and Relic Gear Only
+2119990148|5ABC6EB1||Witcher and Relic Gear Only
+2119990149|A710F5DD||Witcher School Gear Only
+2119990150|B58C9A4B||Witcher School Gear Only
+2119990151|34EEFE67||Witcher School Gear Only
+2119990152|95B9B437||Relic and Modded Gear Only (Exclude Witcher)
+2119990153|FFB4D5A5||Relic and Modded Gear Only (Exclude Witcher)
+2119990154|1AB813C1||Relic and Modded Gear Only (Exclude Witcher)
+2119990155|BC0428E7||Manual (One-by-One in Repair Tab)
+2119990156|CBEFA039||Manual (One-by-One in Repair Tab)
+2119990157|E3061B9D||Manual (One-by-One in Repair Tab)
+2119990158|512B94EF||Automatic (All Gear on Dialogue)
+2119990159|412AEB5D||Automatic (All Gear on Dialogue)
+2119990160|31657379||Automatic (All Gear on Dialogue)
+2119990161|7BAE2F3C||Durability Repair Only (No Leveling)
+2119990162|16209EAA||Durability Repair Only (No Leveling)
+2119990163|D761B8C6||Durability Repair Only (No Leveling)
+2119990164|9844933F||Repair + Level Tempering (Combined)
+2119990165|5B2F7E11||Repair + Level Tempering (Combined)
+2119990166|0694B075||Repair + Level Tempering (Combined)
+2119990167|041AE685||Temper Only When Pristine (100% Durability)
+2119990168|6A9EDF57||Temper Only When Pristine (100% Durability)
+2119990169|296D6DBB||Temper Only When Pristine (100% Durability)
+2119990170|AC522CF8||Free (Zero Cost)
+2119990171|49781F66||Free (Zero Cost)
+2119990172|FB9E5F82||Free (Zero Cost)
+2119990173|719F52B0||Crowns Only
+2119990174|BC2B1382||Crowns Only
+2119990175|4EAC31E6||Crowns Only
+2119990176|D23B0B20||Materials Only
+2119990177|CF76C10E||Materials Only
+2119990178|AF26582A||Materials Only
+2119990179|F2BBAE9F||Crowns and Materials
+2119990180|CDA6BA0D||Crowns and Materials
+2119990181|84378C29||Crowns and Materials
+2119990182|3D86B6DB||Tempering Oil / Alchemical
+2119990183|9BAAF7C9||Tempering Oil / Alchemical
+2119990184|CC04C4E5||Tempering Oil / Alchemical
+2119990185|506DB199||Weapon / Armor Repair Kit
+2119990186|11669AEB||Weapon / Armor Repair Kit
+2119990187|7E50BA4F||Weapon / Armor Repair Kit
+2119990188|79E26E08||Dimeritium Ingot
+2119990189|17086076||Dimeritium Ingot
+2119990190|C92EA092||Dimeritium Ingot
+2119990191|796CB730||Meteorite Ore
+2119990192|500B8B82||Meteorite Ore
+2119990193|46BEA0E6||Meteorite Ore
+2119990194|A3F506BC||Khser's Choice
+2119990195|A130BCAA||Khser's Choice
+2119990196|80E053C6||Khser's Choice
+2119990197|A46B29CE||Story (Free)
+2119990198|A1A6DFBC||Story (Free)
+2119990199|815676D8||Story (Free)
+2119990200|33437791||Hardcore
+2119990201|3ADBD2E3||Hardcore
+2119990202|CD7D9647||Hardcore
+2119990203|E3EAD8A4||Purist
+2119990204|8E25E076||Purist
+2119990205|A4692CDA||Purist
+2119990206|C594E2DF||Preset
+2119990207|256466CD||Preset
+2119990208|C5BAD9E9||Preset
+2119990209|AF6A7E9C||Crowns
+2119990210|0001ADD2||Oil
+2119990211|7EF7BBC3||Repair Kit
+2119990212|11D36527||Material
+2119990213|903CBEC6||Installed Version
+2119990214|846A07FC||Installed Version
+2119990215|415AB8F7||Enable Leveling Gear
+2119990216|90A6EB81||Enable Leveling Gear
+2119990217|D852DC7D||Gear Whitelist Scope
+2119990218|9CE1E407||Gear Whitelist Scope
+2119990219|D72135B3||Exclude Aerondight (Native Stacking)
+2119990220|689D133D||Exclude Aerondight (Native Stacking)
+2119990221|CB875EC7||Enable Crossbow Scaling
+2119990222|65C17D7D||Enable Crossbow Scaling
+2119990223|CB347C5A||Auto-Scale Loot Drops
+2119990224|656E9B10||Auto-Scale Loot Drops
+2119990225|8FC892BD||Upgrade Trigger: At Craftsmen
+2119990226|2A02B173||Upgrade Trigger: At Craftsmen
+2119990227|489276A2||Craftsman Upgrade Mode
+2119990228|97DEA92C||Craftsman Upgrade Mode
+2119990229|4204CE02||Craftsman Durability Repair Action
+2119990230|CFE2D68C||Craftsman Durability Repair Action
+2119990231|6DDC7568||Upgrade Bagged Inventory Gear
+2119990232|6209BE9E||Upgrade Bagged Inventory Gear
+2119990233|341F0681||Upgrade Stash Gear (Player Chest)
+2119990234|F49D5AB7||Upgrade Stash Gear (Player Chest)
+2119990235|E982982F||Upgrade Trigger: On Opening Stash Chest
+2119990236|DDAFE165||Upgrade Trigger: On Opening Stash Chest
+2119990237|CBF5F5AC||Upgrade Trigger: Via Field Maintenance Kit
+2119990238|78FFADB6||Upgrade Trigger: Via Field Maintenance Kit
+2119990239|5F756E74||Allow Field Kit on Pristine (100%) Gear
+2119990240|EDF37C7E||Allow Field Kit on Pristine (100%) Gear
+2119990241|56D9050F||Upgrade Trigger: On Level-Up (Auto)
+2119990242|F11323C5||Upgrade Trigger: On Level-Up (Auto)
+2119990243|03FD59A1||Upgrade Trigger: On Item Equip
+2119990244|9E377857||Upgrade Trigger: On Item Equip
+2119990245|B5236AE2||Downscale High-Level Gear to Player Level
+2119990246|53233E98||Downscale High-Level Gear to Player Level
+2119990247|7C13FDAF||Normalize Secondary Stats (Restore on Level-Up)
+2119990248|1A13D165||Normalize Secondary Stats (Restore on Level-Up)
+2119990249|9B4DE2BD||Downscale Cost Multiplier (0.0 = Free)
+2119990250|2CC9C047||Downscale Cost Multiplier (0.0 = Free)
+2119990251|876D6E98||Payment Currency
+2119990252|6458BBA2||Payment Currency
+2119990253|61F9D86E||Required Material for Upgrades
+2119990254|562721A4||Required Material for Upgrades
+2119990255|A9F493AB||Base Crown Cost per Level Difference
+2119990256|F940C635||Base Crown Cost per Level Difference
+2119990257|F5DC4BC3||Cost Multiplier: Common / Magic
+2119990258|C32E3579||Cost Multiplier: Common / Magic
+2119990259|1941469B||Cost Multiplier: Relic / Rare
+2119990260|DDD04E25||Cost Multiplier: Relic / Rare
+2119990261|DDCAB7DC||Cost Multiplier: Witcher School
+2119990262|BAB604E6||Cost Multiplier: Witcher School
+2119990263|EAA0C28C||Show On-Screen HUD Notification
+2119990264|97AA7A96||Show On-Screen HUD Notification
+2119990265|78A8280A||Play Craftsman Anvil Sound Effect
+2119990266|16A7FBC0||Play Craftsman Anvil Sound Effect
+2119990267|740830F7||v1.0.24
+2119990268|F67E9349||v1.0.24
+2119990269|120804AD||v1.0.24
+2119990270|0F0DBCEE||All Gear (Vanilla and Modded)
+2119990271|0C4972DC||All Gear (Vanilla and Modded)
+2119990272|EBF909F8||All Gear (Vanilla and Modded)
+2119990273|0F0DBCEF||Witcher and Relic Gear Only
+2119990274|0C4972DD||Witcher and Relic Gear Only
+2119990275|EBF909F9||Witcher and Relic Gear Only
+2119990276|0F0DBCF0||Witcher School Gear Only
+2119990277|0C4972DE||Witcher School Gear Only
+2119990278|EBF909FA||Witcher School Gear Only
+2119990279|0F0DBCF1||Relic and Modded Gear Only (Exclude Witcher)
+2119990280|0C4972DF||Relic and Modded Gear Only (Exclude Witcher)
+2119990281|EBF909FB||Relic and Modded Gear Only (Exclude Witcher)
+2119990282|6DCF61D3||Manual (One-by-One in Repair Tab)
+2119990283|594270C1||Manual (One-by-One in Repair Tab)
+2119990284|1AD919DD||Manual (One-by-One in Repair Tab)
+2119990285|6DCF61D4||Automatic (All Gear on Dialogue)
+2119990286|594270C2||Automatic (All Gear on Dialogue)
+2119990287|1AD919DE||Automatic (All Gear on Dialogue)
+2119990288|D4096133||Durability Repair Only (No Leveling)
+2119990289|322DA221||Durability Repair Only (No Leveling)
+2119990290|62876F3D||Durability Repair Only (No Leveling)
+2119990291|D4096134||Repair + Level Tempering (Combined)
+2119990292|322DA222||Repair + Level Tempering (Combined)
+2119990293|62876F3E||Repair + Level Tempering (Combined)
+2119990294|D4096135||Temper Only When Pristine (100% Durability)
+2119990295|322DA223||Temper Only When Pristine (100% Durability)
+2119990296|62876F3F||Temper Only When Pristine (100% Durability)
+2119990297|61CC3449||Free (Zero Cost)
+2119990298|FEF226B7||Free (Zero Cost)
+2119990299|B11866D3||Free (Zero Cost)
+2119990300|61CC344A||Crowns Only
+2119990301|FEF226B8||Crowns Only
+2119990302|B11866D4||Crowns Only
+2119990303|61CC344B||Materials Only
+2119990304|FEF226B9||Materials Only
+2119990305|B11866D5||Materials Only
+2119990306|61CC344C||Crowns and Materials
+2119990307|FEF226BA||Crowns and Materials
+2119990308|B11866D6||Crowns and Materials
+2119990309|CAE5809F||Tempering Oil / Alchemical
+2119990310|4D5BE2F1||Tempering Oil / Alchemical
+2119990311|68E55455||Tempering Oil / Alchemical
+2119990312|CAE580A0||Weapon / Armor Repair Kit
+2119990313|4D5BE2F2||Weapon / Armor Repair Kit
+2119990314|68E55456||Weapon / Armor Repair Kit
+2119990315|CAE580A1||Dimeritium Ingot
+2119990316|4D5BE2F3||Dimeritium Ingot
+2119990317|68E55457||Dimeritium Ingot
+2119990318|CAE580A2||Meteorite Ore
+2119990319|4D5BE2F4||Meteorite Ore
+2119990320|68E55458||Meteorite Ore
+2119990321|CFCC3178||Khser's Choice
+2119990322|1A57F24A||Khser's Choice
+2119990323|ACD910AE||Khser's Choice
+2119990324|CFCC3179||Story (Free)
+2119990325|1A57F24B||Story (Free)
+2119990326|ACD910AF||Story (Free)
+2119990327|CFCC317A||Hardcore
+2119990328|1A57F24C||Hardcore
+2119990329|ACD910B0||Hardcore
+2119990330|CFCC317B||Purist
+2119990331|1A57F24D||Purist
+2119990332|ACD910B1||Purist
+2119990333|132B8D98||v1.0.24

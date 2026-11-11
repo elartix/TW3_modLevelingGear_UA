@@ -132,25 +132,9 @@ class CModLevelingGearManager
 	{
 		switch ( attributeName )
 		{
-			case 'attack_power':
-			case 'SilverDamage':
-			case 'silver_damage':
-			case 'SlashingDamage':
-			case 'slashing_damage':
-			case 'PiercingDamage':
-			case 'piercing_damage':
-			case 'BludgeoningDamage':
-			case 'bludgeoning_damage':
-			case 'RendingDamage':
-			case 'rending_damage':
-			case 'ElementalDamage':
-			case 'elemental_damage':
-			case 'FireDamage':
-			case 'fire_damage':
 			case 'critical_hit_chance':
 			case 'critical_hit_damage':
 			case 'armor_piercing':
-			case 'armor':
 			case 'spell_power_igni':
 			case 'spell_power_aard':
 			case 'spell_power_quen':
@@ -255,6 +239,8 @@ class CModLevelingGearManager
 	{
 		var baseLevel, scaledLevel, deltaLevels : int;
 		var slope : float;
+		var cfg : CModLevelingGearConfig;
+		var playerLvl : int;
 
 		if ( !inv || !inv.IsIdValid(item) )
 		{
@@ -263,6 +249,23 @@ class CModLevelingGearManager
 
 		baseLevel = inv.GetItemModifierInt(item, 'MLG_BaseLevel');
 		scaledLevel = inv.GetItemModifierInt(item, 'MLG_ScaledLevel');
+
+		if ( baseLevel <= 0 || scaledLevel <= 0 )
+		{
+			cfg = GetConfig();
+			if ( cfg && cfg.ShouldDownscaleHighLevel() && thePlayer )
+			{
+				playerLvl = thePlayer.GetLevel();
+				if ( baseLevel <= 0 )
+				{
+					baseLevel = inv.GetItemLevel(item);
+				}
+				if ( playerLvl > 0 && baseLevel > playerLvl )
+				{
+					scaledLevel = playerLvl;
+				}
+			}
+		}
 
 		if ( baseLevel <= 0 || scaledLevel <= 0 || scaledLevel >= baseLevel )
 		{
@@ -356,7 +359,10 @@ class CModLevelingGearManager
 			{
 				if ( scaledLevel < baseLevel )
 				{
-					return MaxF(0.01, (float)scaledLevel / (float)baseLevel);
+					// Crossbows are utility weapons (air knockdown, underwater dispatch, aesthetic).
+					// Crossbow attack power must NEVER be penalized below 1.0x (100%), preserving authentic
+					// water, boat, shoreline, mounted, and ground combat, while allowing upward level scaling.
+					return 1.0;
 				}
 				else if ( scaledLevel > baseLevel )
 				{
@@ -416,26 +422,23 @@ class CModLevelingGearManager
 		{
 			if ( player.GetItemEquippedOnSlot(slots[i], item) && IsItemEligible(inv, item) )
 			{
+				if ( (slots[i] == EES_SteelSword || slots[i] == EES_SilverSword) && !inv.IsItemHeld(item) )
+				{
+					continue;
+				}
 				ratio = GetItemScalingRatio(inv, item);
 				if ( ratio < 0.999 )
 				{
-					if ( attributeName == 'armor' || attributeName == theGame.params.ARMOR_VALUE_NAME )
+					itemAttr = inv.GetItemAttributeValue(item, attributeName);
+					itemVal = itemAttr.valueAdditive;
+					if ( itemVal == 0.0 && itemAttr.valueBase != 0.0 )
 					{
-						totalCorrection -= GetPrimaryStatDownscaleDelta(inv, item);
+						itemVal = itemAttr.valueBase;
 					}
-					else
-					{
-						itemAttr = inv.GetItemAttributeValue(item, attributeName);
-						itemVal = itemAttr.valueAdditive;
-						if ( itemVal == 0.0 && itemAttr.valueBase != 0.0 )
-						{
-							itemVal = itemAttr.valueBase;
-						}
 
-						if ( itemVal > 0.0 )
-						{
-							totalCorrection += itemVal * (ratio - 1.0);
-						}
+					if ( itemVal > 0.0 )
+					{
+						totalCorrection += itemVal * (ratio - 1.0);
 					}
 				}
 			}
@@ -466,13 +469,18 @@ class CModLevelingGearManager
 		category = inv.GetItemCategory(item);
 
 		isSword = (category == 'silversword' || category == 'steelsword' 
-			|| inv.ItemHasTag(item, 'PlayerSteelWeapon') || inv.ItemHasTag(item, 'PlayerSilverWeapon'));
+			|| inv.ItemHasTag(item, 'PlayerSteelWeapon') || inv.ItemHasTag(item, 'PlayerSilverWeapon')
+			|| inv.IsItemSteelSwordUsableByPlayer(item) || inv.IsItemSilverSwordUsableByPlayer(item)
+			|| (inv.IsItemWeapon(item) && !inv.IsItemCrossbow(item) && !inv.IsItemSecondaryWeapon(item))
+			|| inv.ItemHasTag(item, 'W2Sword') || (inv.ItemHasTag(item, 'W2Gear') && !inv.IsItemAnyArmor(item)));
 
 		isSecondary = (category == 'axe' || category == 'bludgeon' || category == 'secondary'
 			|| inv.IsItemSecondaryWeapon(item) || inv.ItemHasTag(item, 'SecondaryWeapon'));
 
-		isArmor = (category == 'armor' || category == 'boots' || category == 'gloves' || category == 'pants'
-			|| inv.IsItemChestArmor(item) || inv.IsItemBoots(item) || inv.IsItemGloves(item) || inv.IsItemPants(item));
+		isArmor = (category == 'armor' || category == 'boots' || category == 'gloves' || category == 'pants' || category == 'trousers'
+			|| inv.IsItemChestArmor(item) || inv.IsItemBoots(item) || inv.IsItemGloves(item) || inv.IsItemPants(item)
+			|| inv.IsItemAnyArmor(item) || inv.ItemHasTag(item, theGame.params.TAG_ARMOR)
+			|| inv.ItemHasTag(item, 'W2Armor') || inv.ItemHasTag(item, 'W2Gear') || inv.ItemHasTag(item, 'Witcher2'));
 
 		isCrossbow = (category == 'crossbow' || inv.IsItemCrossbow(item) || inv.ItemHasTag(item, 'crossbow'));
 
@@ -493,7 +501,7 @@ class CModLevelingGearManager
 			return false;
 		}
 
-		if ( isBolt )
+		if ( isBolt || isCrossbow )
 		{
 			return true;
 		}
@@ -509,12 +517,24 @@ class CModLevelingGearManager
 		// 1: Witcher & Relic Gear Only
 		else if ( scope == 1 )
 		{
-			return (quality >= 4 || inv.ItemHasTag(item, 'EP1') || inv.ItemHasTag(item, 'WitcherGear') || inv.ItemHasTag(item, 'DLC'));
+			return (quality >= 4 || inv.ItemHasTag(item, 'EP1') || inv.ItemHasTag(item, 'WitcherGear') || inv.ItemHasTag(item, 'DLC')
+				|| inv.ItemHasTag(item, 'W2Gear') || inv.ItemHasTag(item, 'Witcher2') || inv.ItemHasTag(item, 'W2Armor') || inv.ItemHasTag(item, 'W2Sword'));
 		}
 		// 2: Witcher School Gear Only
 		else if ( scope == 2 )
 		{
-			return (quality == 5 || inv.ItemHasTag(item, 'WitcherGear'));
+			return (quality == 5 || inv.ItemHasTag(item, 'WitcherGear') || inv.ItemHasTag(item, 'W2Gear') || inv.ItemHasTag(item, 'Witcher2') || inv.ItemHasTag(item, 'W2Armor'));
+		}
+		// 3: Relic and Modded Gear Only (Exclude Witcher School Sets)
+		else if ( scope == 3 )
+		{
+			if ( quality == 5 || inv.ItemHasTag(item, 'WitcherGear') || inv.IsItemSetItem(item) )
+			{
+				return false;
+			}
+			return (quality == 4 || inv.ItemHasTag(item, 'EP1') || inv.ItemHasTag(item, 'DLC')
+				|| inv.ItemHasTag(item, 'W2Gear') || inv.ItemHasTag(item, 'Witcher2') || inv.ItemHasTag(item, 'W2Armor') || inv.ItemHasTag(item, 'W2Sword')
+				|| inv.ItemHasTag(item, 'Modded'));
 		}
 
 		return true;
@@ -551,8 +571,8 @@ class CModLevelingGearManager
 	public function GetCrownsDisplayName() : string
 	{
 		var loc : string;
-		loc = GetLocStringByKeyExt("Crowns");
-		if ( loc != "" && !StrBeginsWith(loc, "##") )
+		loc = ModLevelingGear_GetLocalizedString("Crowns");
+		if ( loc != "" )
 		{
 			return loc;
 		}
@@ -570,24 +590,24 @@ class CModLevelingGearManager
 		switch ( idx )
 		{
 			case 0:
-				loc = GetLocStringByKeyExt("Oil");
-				if ( loc != "" && !StrBeginsWith(loc, "##") ) return loc;
+				loc = ModLevelingGear_GetLocalizedString("Oil");
+				if ( loc != "" ) return loc;
 				return "Oil";
 			case 1:
-				loc = GetLocStringByKeyExt("Repair Kit");
-				if ( loc != "" && !StrBeginsWith(loc, "##") ) return loc;
+				loc = ModLevelingGear_GetLocalizedString("Repair Kit");
+				if ( loc != "" ) return loc;
 				return "Repair Kit";
 			case 2:
-				loc = GetLocStringByKeyExt("Dimeritium Ingot");
-				if ( loc != "" && !StrBeginsWith(loc, "##") ) return loc;
+				loc = ModLevelingGear_GetLocalizedString("Dimeritium Ingot");
+				if ( loc != "" ) return loc;
 				return "Dimeritium Ingot";
 			case 3:
-				loc = GetLocStringByKeyExt("Meteorite Ore");
-				if ( loc != "" && !StrBeginsWith(loc, "##") ) return loc;
+				loc = ModLevelingGear_GetLocalizedString("Meteorite Ore");
+				if ( loc != "" ) return loc;
 				return "Meteorite Ore";
 			default:
-				loc = GetLocStringByKeyExt("Material");
-				if ( loc != "" && !StrBeginsWith(loc, "##") ) return loc;
+				loc = ModLevelingGear_GetLocalizedString("Material");
+				if ( loc != "" ) return loc;
 				return "Material";
 		}
 	}
@@ -787,15 +807,16 @@ class CModLevelingGearManager
 		for (i = 0; i < levelsToScale; i += 1)
 		{
 			if ( inv.ItemHasTag(item, 'PlayerSteelWeapon') || category == 'steelsword' 
-				|| category == 'axe' || category == 'bludgeon' || category == 'secondary' || inv.IsItemSecondaryWeapon(item) )
+				|| category == 'axe' || category == 'bludgeon' || category == 'secondary' || inv.IsItemSecondaryWeapon(item)
+				|| inv.IsItemSteelSwordUsableByPlayer(item) )
 			{
 				inv.AddItemCraftedAbility(item, 'autogen_fixed_steel_dmg', true);
 			}
-			else if ( inv.ItemHasTag(item, 'PlayerSilverWeapon') || category == 'silversword' )
+			else if ( inv.ItemHasTag(item, 'PlayerSilverWeapon') || category == 'silversword' || inv.IsItemSilverSwordUsableByPlayer(item) )
 			{
 				inv.AddItemCraftedAbility(item, 'autogen_fixed_silver_dmg', true);
 			}
-			else if ( category == 'armor' || inv.IsItemChestArmor(item) )
+			else if ( category == 'armor' || inv.IsItemChestArmor(item) || inv.ItemHasTag(item, 'Body') )
 			{
 				inv.AddItemCraftedAbility(item, 'autogen_fixed_armor_armor', true);
 			}
@@ -803,13 +824,25 @@ class CModLevelingGearManager
 			{
 				inv.AddItemCraftedAbility(item, 'autogen_fixed_gloves_armor', true);
 			}
-			else if ( category == 'boots' || category == 'pants' || inv.IsItemBoots(item) || inv.IsItemPants(item) )
+			else if ( category == 'boots' || inv.IsItemBoots(item) )
+			{
+				inv.AddItemCraftedAbility(item, 'autogen_fixed_boots_armor', true);
+			}
+			else if ( category == 'pants' || category == 'trousers' || inv.IsItemPants(item) )
 			{
 				inv.AddItemCraftedAbility(item, 'autogen_fixed_pants_armor', true);
 			}
 			else if ( category == 'crossbow' || inv.IsItemCrossbow(item) )
 			{
 				inv.AddItemCraftedAbility(item, 'Rune elemental _Stats', true);
+			}
+			else if ( inv.IsItemAnyArmor(item) )
+			{
+				inv.AddItemCraftedAbility(item, 'autogen_fixed_armor_armor', true);
+			}
+			else if ( inv.IsItemWeapon(item) )
+			{
+				inv.AddItemCraftedAbility(item, 'autogen_fixed_steel_dmg', true);
 			}
 		}
 
@@ -853,11 +886,16 @@ class CModLevelingGearManager
 					{
 						category = inv.GetItemCategory(item);
 						isSword = (category == 'silversword' || category == 'steelsword' 
-							|| inv.ItemHasTag(item, 'PlayerSteelWeapon') || inv.ItemHasTag(item, 'PlayerSilverWeapon'));
+							|| inv.ItemHasTag(item, 'PlayerSteelWeapon') || inv.ItemHasTag(item, 'PlayerSilverWeapon')
+							|| inv.IsItemSteelSwordUsableByPlayer(item) || inv.IsItemSilverSwordUsableByPlayer(item)
+							|| (inv.IsItemWeapon(item) && !inv.IsItemCrossbow(item) && !inv.IsItemSecondaryWeapon(item))
+							|| inv.ItemHasTag(item, 'W2Sword') || (inv.ItemHasTag(item, 'W2Gear') && !inv.IsItemAnyArmor(item)));
 						isSecondary = (category == 'axe' || category == 'bludgeon' || category == 'secondary'
 							|| inv.IsItemSecondaryWeapon(item) || inv.ItemHasTag(item, 'SecondaryWeapon'));
-						isArmor = (category == 'armor' || category == 'boots' || category == 'gloves' || category == 'pants'
-							|| inv.IsItemChestArmor(item) || inv.IsItemBoots(item) || inv.IsItemGloves(item) || inv.IsItemPants(item));
+						isArmor = (category == 'armor' || category == 'boots' || category == 'gloves' || category == 'pants' || category == 'trousers'
+							|| inv.IsItemChestArmor(item) || inv.IsItemBoots(item) || inv.IsItemGloves(item) || inv.IsItemPants(item)
+							|| inv.IsItemAnyArmor(item) || inv.ItemHasTag(item, theGame.params.TAG_ARMOR)
+							|| inv.ItemHasTag(item, 'W2Armor') || inv.ItemHasTag(item, 'W2Gear') || inv.ItemHasTag(item, 'Witcher2'));
 						isCrossbow = (category == 'crossbow' || inv.IsItemCrossbow(item) || inv.ItemHasTag(item, 'crossbow'));
 						isBolt = (category == 'bolt' || inv.IsItemBolt(item) || inv.ItemHasTag(item, 'bolt'));
 
@@ -884,11 +922,16 @@ class CModLevelingGearManager
 					{
 						category = inv.GetItemCategory(item);
 						isSword = (category == 'silversword' || category == 'steelsword' 
-							|| inv.ItemHasTag(item, 'PlayerSteelWeapon') || inv.ItemHasTag(item, 'PlayerSilverWeapon'));
+							|| inv.ItemHasTag(item, 'PlayerSteelWeapon') || inv.ItemHasTag(item, 'PlayerSilverWeapon')
+							|| inv.IsItemSteelSwordUsableByPlayer(item) || inv.IsItemSilverSwordUsableByPlayer(item)
+							|| (inv.IsItemWeapon(item) && !inv.IsItemCrossbow(item) && !inv.IsItemSecondaryWeapon(item))
+							|| inv.ItemHasTag(item, 'W2Sword') || (inv.ItemHasTag(item, 'W2Gear') && !inv.IsItemAnyArmor(item)));
 						isSecondary = (category == 'axe' || category == 'bludgeon' || category == 'secondary'
 							|| inv.IsItemSecondaryWeapon(item) || inv.ItemHasTag(item, 'SecondaryWeapon'));
-						isArmor = (category == 'armor' || category == 'boots' || category == 'gloves' || category == 'pants'
-							|| inv.IsItemChestArmor(item) || inv.IsItemBoots(item) || inv.IsItemGloves(item) || inv.IsItemPants(item));
+						isArmor = (category == 'armor' || category == 'boots' || category == 'gloves' || category == 'pants' || category == 'trousers'
+							|| inv.IsItemChestArmor(item) || inv.IsItemBoots(item) || inv.IsItemGloves(item) || inv.IsItemPants(item)
+							|| inv.IsItemAnyArmor(item) || inv.ItemHasTag(item, theGame.params.TAG_ARMOR)
+							|| inv.ItemHasTag(item, 'W2Armor') || inv.ItemHasTag(item, 'W2Gear') || inv.ItemHasTag(item, 'Witcher2'));
 						isCrossbow = (category == 'crossbow' || inv.IsItemCrossbow(item) || inv.ItemHasTag(item, 'crossbow'));
 						isBolt = (category == 'bolt' || inv.IsItemBolt(item) || inv.ItemHasTag(item, 'bolt'));
 
@@ -1031,11 +1074,11 @@ class CModLevelingGearManager
 
 				if ( shortageCrowns > 0 && shortageMats > 0 )
 				{
-					shortageMsg += " (Needs " + IntToString(shortageCrowns) + " Crowns, " + IntToString(shortageMats) + " " + GetMaterialDisplayName() + ")";
+					shortageMsg += " (Needs " + IntToString(shortageCrowns) + " " + GetCrownsDisplayName() + ", " + IntToString(shortageMats) + " " + GetMaterialDisplayName() + ")";
 				}
 				else if ( shortageCrowns > 0 )
 				{
-					shortageMsg += " (Needs " + IntToString(shortageCrowns) + " Crowns)";
+					shortageMsg += " (Needs " + IntToString(shortageCrowns) + " " + GetCrownsDisplayName() + ")";
 				}
 				else if ( shortageMats > 0 )
 				{
@@ -1045,6 +1088,117 @@ class CModLevelingGearManager
 				player.DisplayHudMessage(shortageMsg);
 			}
 		}
+
+		if ( cfg.ShouldUpgradeStash() )
+		{
+			ProcessStashUpgrades(player);
+		}
+	}
+
+	public function ProcessStashUpgrades(player : W3PlayerWitcher) : int
+	{
+		var cfg : CModLevelingGearConfig = GetConfig();
+		var horseMgr : W3HorseManager;
+		var stashInv : CInventoryComponent;
+		var items : array<SItemUniqueId>;
+		var item : SItemUniqueId;
+		var i, playerLevel, itemLevel, quality, delta : int;
+		var itemCrowns, itemMats, totalCrowns, totalMats : int;
+		var scaledCount, unaffordableCount : int;
+		var upgradeMsg : string;
+
+		if ( !cfg.IsMasterEnabled() || !cfg.ShouldUpgradeStash() || !player )
+		{
+			return 0;
+		}
+
+		horseMgr = player.GetHorseManager();
+		if ( !horseMgr )
+		{
+			return 0;
+		}
+
+		stashInv = horseMgr.GetInventoryComponent();
+		if ( !stashInv )
+		{
+			return 0;
+		}
+
+		playerLevel = player.GetLevel();
+		stashInv.GetAllItems(items);
+		totalCrowns = 0;
+		totalMats = 0;
+		scaledCount = 0;
+		unaffordableCount = 0;
+
+		for (i = 0; i < items.Size(); i += 1)
+		{
+			item = items[i];
+			if ( !IsItemEligible(stashInv, item) )
+			{
+				continue;
+			}
+
+			itemLevel = stashInv.GetItemLevel(item);
+			if ( playerLevel > itemLevel )
+			{
+				delta = playerLevel - itemLevel;
+				quality = RoundMath(CalculateAttributeValue(stashInv.GetItemAttributeValue(item, 'quality')));
+
+				if ( stashInv.IsItemBolt(item) )
+				{
+					itemCrowns = 0;
+					itemMats = 0;
+				}
+				else
+				{
+					CalculateUpgradeCost(playerLevel, itemLevel, quality, itemCrowns, itemMats);
+				}
+
+				if ( CanAffordUpgrade(player, itemCrowns, itemMats) )
+				{
+					DeductUpgradeCost(player, itemCrowns, itemMats);
+					SetScalingInProgress(true);
+					TemperEquippedItem(stashInv, item, delta);
+					stashInv.SetItemModifierInt(item, 'MLG_ScaledLevel', playerLevel);
+					SetScalingInProgress(false);
+
+					totalCrowns += itemCrowns;
+					totalMats += itemMats;
+					scaledCount += 1;
+				}
+				else
+				{
+					unaffordableCount += 1;
+				}
+			}
+		}
+
+		if ( cfg.ShouldNotify() && scaledCount > 0 )
+		{
+			upgradeMsg = "Leveling Gear: Upgraded " + IntToString(scaledCount) + " stash items to Level " + IntToString(playerLevel);
+			if ( totalCrowns > 0 && totalMats > 0 )
+			{
+				upgradeMsg += " (-" + IntToString(totalCrowns) + " " + GetCrownsDisplayName() + ", -" + IntToString(totalMats) + " " + GetMaterialDisplayName() + ")";
+			}
+			else if ( totalCrowns > 0 )
+			{
+				upgradeMsg += " (-" + IntToString(totalCrowns) + " " + GetCrownsDisplayName() + ")";
+			}
+			else if ( totalMats > 0 )
+			{
+				upgradeMsg += " (-" + IntToString(totalMats) + " " + GetMaterialDisplayName() + ")";
+			}
+
+			player.DisplayHudMessage(upgradeMsg);
+
+			if ( cfg.ShouldPlaySound() )
+			{
+				theSound.SoundEvent("gui_inventory_repair");
+			}
+		}
+
+		return scaledCount;
 	}
 
 	public function ProcessItemEquipped(player : W3PlayerWitcher, item : SItemUniqueId)
@@ -1253,11 +1407,11 @@ class CModLevelingGearManager
 
 			if ( shortageCrowns > 0 && shortageMats > 0 )
 			{
-				shortageMsg += " (Needs " + IntToString(shortageCrowns) + " Crowns, " + IntToString(shortageMats) + " " + GetMaterialDisplayName() + ")";
+				shortageMsg += " (Needs " + IntToString(shortageCrowns) + " " + GetCrownsDisplayName() + ", " + IntToString(shortageMats) + " " + GetMaterialDisplayName() + ")";
 			}
 			else if ( shortageCrowns > 0 )
 			{
-				shortageMsg += " (Needs " + IntToString(shortageCrowns) + " Crowns)";
+				shortageMsg += " (Needs " + IntToString(shortageCrowns) + " " + GetCrownsDisplayName() + ")";
 			}
 			else if ( shortageMats > 0 )
 			{
@@ -1432,6 +1586,11 @@ exec function levelgear()
 		{
 			player.DisplayHudMessage(itemName + " is already Lvl " + IntToString(iLvl) + " (Player Lvl " + IntToString(pLvl) + ")");
 		}
+	}
+
+	if ( cfg.ShouldUpgradeStash() )
+	{
+		count += GetModLevelingGearManager().ProcessStashUpgrades(player);
 	}
 
 	if ( count == 0 )

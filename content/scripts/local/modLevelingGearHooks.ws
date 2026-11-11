@@ -19,6 +19,11 @@ function GetItemLevel(item : SItemUniqueId) : int
 	cfg = GetModLevelingGearConfig();
 	baseLvl = wrappedMethod(item);
 
+	if ( cfg.ShouldExcludeAerondight() && ItemHasTag(item, 'Aerondight') )
+	{
+		return baseLvl;
+	}
+
 	if ( baseLvl > 0 && isItemScalable(item) )
 	{
 		GetModLevelingGearManager().EnsureBaseLevelSnapshot(this, item, baseLvl);
@@ -48,7 +53,7 @@ function GetItemLevel(item : SItemUniqueId) : int
 			playerLvl = thePlayer.GetLevel();
 			if ( playerLvl > 0 && origBase > playerLvl )
 			{
-				if ( cfg.GetDownscaleCostMult() <= 0.001 || GetItemModifierInt(item, 'MLG_DownscalePaidLevel') >= playerLvl )
+				if ( cfg.GetDownscaleCostMult() <= 0.001 || GetItemModifierInt(item, 'MLG_DownscalePaidLevel') >= playerLvl || IsItemCrossbow(item) )
 				{
 					SetItemModifierInt(item, 'MLG_ScaledLevel', playerLvl);
 					return playerLvl;
@@ -115,6 +120,36 @@ function GetItemPrimaryStat(itemId : SItemUniqueId, out attributeLabel : string,
 	}
 }
 
+@wrapMethod(CInventoryComponent)
+function GetItemArmorTotal(item : SItemUniqueId) : SAbilityAttributeValue
+{
+	var v : SAbilityAttributeValue;
+	var d, m : float;
+	var mgr : CModLevelingGearManager;
+
+	v = wrappedMethod(item);
+
+	mgr = GetModLevelingGearManager();
+	if ( mgr && isItemScalable(item) )
+	{
+		d = mgr.GetPrimaryStatDownscaleDelta(this, item);
+		if ( d > 0.0 )
+		{
+			v.valueAdditive = v.valueAdditive - d;
+			m = theGame.params.GetDurabilityMultiplier( GetItemDurabilityRatio(item), false );
+			// REDengine SAbilityAttributeValue defaults valueMultiplicative to 0.0 on item attributes,
+			// causing CalculateAttributeValue(v) to multiply valueBase by 0 and destroy armor stats.
+			// Clamp net additive directly so total armor remains >= 1.0 without destroying valueBase.
+			if ( (v.valueBase + v.valueAdditive) < 1.0 )
+			{
+				v.valueAdditive = 1.0 - v.valueBase;
+			}
+		}
+	}
+
+	return v;
+}
+
 @wrapMethod(W3TooltipComponent)
 function GetCrossbowPrimatyStat(itemId : SItemUniqueId, itemInvComponent : CInventoryComponent, out primaryStatLabel : string, out primaryStatValue : float)
 {
@@ -152,13 +187,17 @@ function GetTotalWeaponDamage(weaponId : SItemUniqueId, damageTypeName : name, c
 	mgr = GetModLevelingGearManager();
 	if ( inv && mgr && inv.IsIdValid(weaponId) && inv.isItemScalable(weaponId) )
 	{
-		if ( mgr.IsPrimaryDamageType(inv, weaponId, damageTypeName) )
+		if ( mgr.IsPrimaryDamageType(inv, weaponId, damageTypeName) && !inv.IsItemCrossbow(weaponId) && !inv.IsItemBolt(weaponId) )
 		{
-			delta = mgr.GetPrimaryStatDownscaleDelta(inv, weaponId);
-			if ( delta > 0.0 )
+			// Crossbow shots / bolts are scaled exclusively via GetPrimaryDamageMultiplier; never apply melee downscale delta to bolts
+			if ( !inv.IsIdValid(crossbowId) )
 			{
-				damage = MaxF(10.0, damage - delta);
-				return damage;
+				delta = mgr.GetPrimaryStatDownscaleDelta(inv, weaponId);
+				if ( delta > 0.0 )
+				{
+					damage = MaxF(10.0, damage - delta);
+					return damage;
+				}
 			}
 		}
 	}
@@ -170,6 +209,12 @@ function GetTotalWeaponDamage(weaponId : SItemUniqueId, damageTypeName : name, c
 		{
 			damage = damage * mult;
 		}
+	}
+
+	// Fail-safe: Underwater bolt damage against monsters must never be attenuated below baseline
+	if ( (this.IsSwimming() || this.IsDiving() || this.GetCurrentStateName() == 'Swimming') && (inv && (inv.IsItemBolt(weaponId) || inv.IsIdValid(crossbowId))) && damage < 100.0 && (damageTypeName == theGame.params.DAMAGE_NAME_SILVER || damageTypeName == theGame.params.DAMAGE_NAME_PIERCING) )
+	{
+		damage = MaxF(400.0, damage);
 	}
 
 	return damage;
@@ -309,7 +354,7 @@ function RepairItem(rapairKitId : SItemUniqueId, usedOnItem : SItemUniqueId)
 
 	cfg = GetModLevelingGearConfig();
 	allowPristine = ( cfg.IsMasterEnabled() && cfg.IsTriggerFieldKitEnabled() && cfg.ShouldAllowFieldKitOnPristine() );
-	if ( allowPristine && inv.GetItemDurability(usedOnItem) >= inv.GetItemMaxDurability(usedOnItem) )
+	if ( allowPristine && (!inv.HasItemDurability(usedOnItem) || inv.GetItemDurability(usedOnItem) >= inv.GetItemMaxDurability(usedOnItem)) )
 	{
 		wasPristine = true;
 	}
@@ -330,21 +375,15 @@ function RepairItem(rapairKitId : SItemUniqueId, usedOnItem : SItemUniqueId)
 @wrapMethod(W3GuiRepairInventoryComponent)
 function CanRepairItem( item : SItemUniqueId ) : bool
 {
-	if ( wrappedMethod(item) )
-	{
-		return true;
-	}
-	if ( repairSwords && _inv.IsItemCrossbow(item) && GetModLevelingGearConfig().IsMasterEnabled() && GetModLevelingGearConfig().ShouldScaleCrossbows() )
-	{
-		return true;
-	}
-	return false;
+	// Crossbows have no durability: never inject them into the durability repair list (avoids Repair-All price desync).
+	return wrappedMethod(item);
 }
 
 @wrapMethod(W3GuiRepairInventoryComponent)
 function ShouldShowItem(item : SItemUniqueId) : bool
 {
 	var cfg : CModLevelingGearConfig;
+	var isCraftsmanMatch : bool;
 	var res : bool;
 
 	res = wrappedMethod(item);
@@ -356,7 +395,10 @@ function ShouldShowItem(item : SItemUniqueId) : bool
 	cfg = GetModLevelingGearConfig();
 	if ( cfg.IsMasterEnabled() && cfg.IsTriggerCrafterEnabled() && cfg.GetCraftsmanUpgradeMode() == 0 )
 	{
-		if ( CanRepairItem(item) && _inv.isItemScalable(item) )
+		isCraftsmanMatch = ( (repairArmors && _inv.IsItemAnyArmor(item))
+			|| (repairSwords && (_inv.IsItemSteelSwordUsableByPlayer(item) || _inv.IsItemSilverSwordUsableByPlayer(item) || _inv.IsItemSecondaryWeapon(item) || (_inv.IsItemCrossbow(item) && cfg.ShouldScaleCrossbows()))) );
+
+		if ( isCraftsmanMatch && _inv.isItemScalable(item) )
 		{
 			if ( thePlayer.GetLevel() > _inv.GetItemLevel(item) )
 			{
@@ -381,16 +423,6 @@ function OnConfigUI()
 	}
 }
 
-@wrapMethod(CR4CraftingMenu)
-function OnConfigUI()
-{
-	wrappedMethod();
-	if ( GetModLevelingGearConfig().IsTriggerCrafterEnabled() && GetModLevelingGearConfig().GetCraftsmanUpgradeMode() == 1 )
-	{
-		GetModLevelingGearManager().ProcessCraftsmanService(GetWitcherPlayer(), true, true);
-	}
-}
-
 @wrapMethod(CR4BlacksmithMenu)
 function OnRepairItem(item : SItemUniqueId, price : int)
 {
@@ -403,7 +435,7 @@ function OnRepairItem(item : SItemUniqueId, price : int)
 
 	player = GetWitcherPlayer();
 	inv = player.GetInventory();
-	wasPristine = ( inv.GetItemDurability(item) >= inv.GetItemMaxDurability(item) );
+	wasPristine = ( !inv.HasItemDurability(item) || inv.GetItemDurability(item) >= inv.GetItemMaxDurability(item) );
 
 	// 1. GUARANTEED VANILLA REPAIR: Always executes durability repair first
 	wrappedMethod(item, price);
@@ -477,6 +509,28 @@ function BuildCache(rootContainer : W3Container, range : float, containerClass :
 		GetModLevelingGearManager().ProcessLootContainer(rootContainer);
 	}
 	wrappedMethod(rootContainer, range, containerClass);
+}
+
+@wrapMethod(W3Stash)
+function OnInteraction( actionName : string, activator : CEntity )
+{
+	var mgr : CModLevelingGearManager;
+	var cfg : CModLevelingGearConfig;
+
+	wrappedMethod(actionName, activator);
+
+	if ( activator == thePlayer )
+	{
+		cfg = GetModLevelingGearConfig();
+		if ( cfg && cfg.IsMasterEnabled() && cfg.ShouldUpgradeStash() && cfg.IsTriggerStashOpenEnabled() )
+		{
+			mgr = GetModLevelingGearManager();
+			if ( mgr )
+			{
+				mgr.ProcessStashUpgrades(GetWitcherPlayer());
+			}
+		}
+	}
 }
 
 function ModLevelingGear_GiveTestGear()
@@ -752,3 +806,99 @@ exec function mlgfixbase()
 	}
 	theGame.GetGuiManager().ShowNotification("Leveling Gear: Base levels re-synced (" + healedCount + " items healed).", 0, false);
 }
+
+function MLG_StripCraftedAbility(inv : CInventoryComponent, item : SItemUniqueId, ab : name)
+{
+	var abilities : array<name>;
+	var guard : int;
+	guard = 0;
+	while ( guard < 128 )
+	{
+		abilities.Clear();
+		inv.GetItemAbilities(item, abilities);
+		if ( !abilities.Contains(ab) ) break;
+		inv.RemoveItemCraftedAbility(item, ab);
+		guard += 1;
+	}
+}
+
+function MLG_RevertAllGear()
+{
+	var player : W3PlayerWitcher = GetWitcherPlayer();
+	var inv : CInventoryComponent;
+	var items : array<SItemUniqueId>;
+	var item : SItemUniqueId;
+	var i, n : int;
+
+	var horseMgr : W3HorseManager;
+	var stashInv : CInventoryComponent;
+
+	if ( !player ) return;
+	inv = player.GetInventory();
+	if ( !inv ) return;
+
+	inv.GetAllItems(items);
+	n = 0;
+	for ( i = 0; i < items.Size(); i += 1 )
+	{
+		item = items[i];
+		if ( inv.GetItemModifierInt(item, 'MLG_BaseLevel') <= 0 && inv.GetItemModifierInt(item, 'MLG_ScaledLevel') <= 0 && inv.GetItemModifierInt(item, 'MLG_CrossbowScaledStacks') <= 0 ) continue;
+
+		MLG_StripCraftedAbility(inv, item, 'autogen_fixed_steel_dmg');
+		MLG_StripCraftedAbility(inv, item, 'autogen_fixed_silver_dmg');
+		MLG_StripCraftedAbility(inv, item, 'autogen_fixed_armor_armor');
+		MLG_StripCraftedAbility(inv, item, 'autogen_fixed_gloves_armor');
+		MLG_StripCraftedAbility(inv, item, 'autogen_fixed_pants_armor');
+		MLG_StripCraftedAbility(inv, item, 'autogen_fixed_boots_armor');
+		MLG_StripCraftedAbility(inv, item, 'Rune elemental _Stats');
+
+		inv.SetItemModifierInt(item, 'MLG_BaseLevel', 0);
+		inv.SetItemModifierInt(item, 'MLG_ScaledLevel', 0);
+		inv.SetItemModifierInt(item, 'MLG_DownscalePaidLevel', 0);
+		inv.SetItemModifierInt(item, 'MLG_CrossbowScaledStacks', 0);
+		n += 1;
+	}
+
+	horseMgr = player.GetHorseManager();
+	if ( horseMgr )
+	{
+		stashInv = horseMgr.GetInventoryComponent();
+		if ( stashInv )
+		{
+			items.Clear();
+			stashInv.GetAllItems(items);
+			for ( i = 0; i < items.Size(); i += 1 )
+			{
+				item = items[i];
+				if ( stashInv.GetItemModifierInt(item, 'MLG_BaseLevel') <= 0 && stashInv.GetItemModifierInt(item, 'MLG_ScaledLevel') <= 0 && stashInv.GetItemModifierInt(item, 'MLG_CrossbowScaledStacks') <= 0 ) continue;
+
+				MLG_StripCraftedAbility(stashInv, item, 'autogen_fixed_steel_dmg');
+				MLG_StripCraftedAbility(stashInv, item, 'autogen_fixed_silver_dmg');
+				MLG_StripCraftedAbility(stashInv, item, 'autogen_fixed_armor_armor');
+				MLG_StripCraftedAbility(stashInv, item, 'autogen_fixed_gloves_armor');
+				MLG_StripCraftedAbility(stashInv, item, 'autogen_fixed_pants_armor');
+				MLG_StripCraftedAbility(stashInv, item, 'autogen_fixed_boots_armor');
+				MLG_StripCraftedAbility(stashInv, item, 'Rune elemental _Stats');
+
+				stashInv.SetItemModifierInt(item, 'MLG_BaseLevel', 0);
+				stashInv.SetItemModifierInt(item, 'MLG_ScaledLevel', 0);
+				stashInv.SetItemModifierInt(item, 'MLG_DownscalePaidLevel', 0);
+				stashInv.SetItemModifierInt(item, 'MLG_CrossbowScaledStacks', 0);
+				n += 1;
+			}
+		}
+	}
+
+	theGame.GetGuiManager().ShowNotification("Leveling Gear: Reverted " + IntToString(n) + " items to vanilla stats.", 0, false);
+}
+
+exec function mlg_revert_all()
+{
+	MLG_RevertAllGear();
+}
+
+exec function mlg_reset_gear()
+{
+	MLG_RevertAllGear();
+}
+

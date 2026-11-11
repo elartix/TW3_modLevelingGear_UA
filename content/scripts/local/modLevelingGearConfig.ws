@@ -53,12 +53,16 @@ class CModLevelingGearConfig
 		if ( wrapper )
 		{
 			val = wrapper.GetVarValue('modLevelingGear', 'mlgExcludeAerondight');
+			if ( val == "false" || val == "0" )
+			{
+				return false;
+			}
 			if ( val == "true" || val == "1" )
 			{
 				return true;
 			}
 		}
-		return false; // Default: false (Aerondight scales natively unless user explicitly toggles this ON)
+		return true; // Default: true (Aerondight has native CDPR leveling mechanics)
 	}
 
 	public function ShouldScaleCrossbows() : bool
@@ -194,6 +198,36 @@ class CModLevelingGearConfig
 			}
 		}
 		return true; // Default: true (user requested default on for bagged gear upgrades)
+	}
+
+	public function ShouldUpgradeStash() : bool
+	{
+		var wrapper : CInGameConfigWrapper = GetWrapper();
+		var val : string;
+		if ( wrapper )
+		{
+			val = wrapper.GetVarValue('modLevelingGear', 'mlgUpgradeStash');
+			if ( StrLower(val) == "true" || val == "1" )
+			{
+				return true;
+			}
+		}
+		return false; // Default: false (Requires explicit user opt-in)
+	}
+
+	public function IsTriggerStashOpenEnabled() : bool
+	{
+		var wrapper : CInGameConfigWrapper = GetWrapper();
+		var val : string;
+		if ( wrapper )
+		{
+			val = wrapper.GetVarValue('modLevelingGear', 'mlgTriggerStashOpen');
+			if ( StrLower(val) == "true" || val == "1" )
+			{
+				return true;
+			}
+		}
+		return false; // Default: false (Requires explicit user opt-in)
 	}
 
 	public function ShouldDownscaleHighLevel() : bool

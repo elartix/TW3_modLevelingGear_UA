@@ -7,27 +7,26 @@ function ModLevelingGear_NormalizeKey(key : string) : string
 {
 	var k : string = key;
 
-	if ( StrBeginsWith(k, "preset_value_mlgInstalledVersion") || StrBeginsWith(k, "option_mlgInstalledVersion") || k == "mlgInstalledVersion_0" || k == "v1.0.14" || k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.10b" || k == "v1.0.7b" || k == "v1.0.7" || k == "v1.0.6" || k == "v1.0.5" || k == "v1.0.4" )
+	if ( StrBeginsWith(k, "preset_value_mlgInstalledVersion") || StrBeginsWith(k, "option_mlgInstalledVersion") || k == "mlgInstalledVersion_0" || k == "v1.0.23" || k == "v1.0.22" || k == "v1.0.21" || k == "v1.0.20" || k == "v1.0.19" || k == "v1.0.18" || k == "v1.0.17" || k == "v1.0.16" || k == "v1.0.15" || k == "v1.0.14" || k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.10b" || k == "v1.0.7b" || k == "v1.0.7" || k == "v1.0.6" || k == "v1.0.5" || k == "v1.0.4" )
 	{
-		return "v1.0.14";
+		return "v1.0.23";
 	}
 
-	if ( StrBeginsWith(k, "option_") )
+	while ( StrBeginsWith(k, "#") )
 	{
-		k = StrAfterFirst(k, "option_");
+		k = StrMid(k, 1);
 	}
-	else if ( StrBeginsWith(k, "preset_value_") )
+
+	while ( StrBeginsWith(k, "option_") || StrBeginsWith(k, "preset_value_") || StrBeginsWith(k, "panel_") )
 	{
-		k = StrAfterFirst(k, "preset_value_");
-	}
-	else if ( StrBeginsWith(k, "panel_") )
-	{
-		k = StrAfterFirst(k, "panel_");
+		if ( StrBeginsWith(k, "option_") ) k = StrMid(k, 7);
+		else if ( StrBeginsWith(k, "preset_value_") ) k = StrMid(k, 13);
+		else if ( StrBeginsWith(k, "panel_") ) k = StrMid(k, 6);
 	}
 
 	// VarId aliases
 	if ( k == "mlgInstalledVersion" ) return "Installed Version";
-	if ( k == "preset_value_mlgInstalledVersion" || k == "mlgInstalledVersion_0" ) return "v1.0.14";
+	if ( k == "preset_value_mlgInstalledVersion" || k == "mlgInstalledVersion_0" ) return "v1.0.23";
 	if ( k == "mlgMasterEnabled" ) return "Enable Leveling Gear";
 	if ( k == "mlgGearScope" ) return "Gear Whitelist Scope";
 	if ( k == "mlgExcludeAerondight" ) return "Exclude Aerondight (Native Stacking)";
@@ -40,6 +39,9 @@ function ModLevelingGear_NormalizeKey(key : string) : string
 	if ( k == "mlgCraftsmanRepairAction_1" || k == "Repair + Level Tempering (Combined)" ) return "Repair + Level Tempering (Combined)";
 	if ( k == "mlgCraftsmanRepairAction_2" || k == "Temper Only When Pristine (100% Durability)" ) return "Temper Only When Pristine (100% Durability)";
 	if ( k == "mlgUpgradeInventory" ) return "Upgrade Bagged Inventory Gear";
+	if ( k == "mlgUpgradeStash" ) return "Upgrade Stash Gear (Player Chest)";
+	if ( k == "mlgTriggerStashOpen" ) return "Upgrade Trigger: On Opening Stash Chest";
+	if ( k == "mlgGearScope_3" ) return "Relic and Modded Gear Only (Exclude Witcher)";
 	if ( k == "mlgTriggerFieldKit" ) return "Upgrade Trigger: Via Field Maintenance Kit";
 	if ( k == "mlgAllowFieldKitOnPristine" ) return "Allow Field Kit on Pristine (100%) Gear";
 	if ( k == "mlgTriggerLevelUp" ) return "Upgrade Trigger: On Level-Up (Auto)";
@@ -64,7 +66,7 @@ function ModLevelingGear_NormalizeKey(key : string) : string
 	if ( k == "mlgPresetPurist" || k == "preset_value_mlgPresetPurist" || k == "Purist" || k == "Witcher School Purist" ) return "Purist";
 
 	// Menu Titles & Tabs
-	if ( k == "Mods.LevelingGear" || k == "mod_leveling_gear" || k == "LevelingGear" ) return "Leveling Gear";
+	if ( k == "Mods.LevelingGear" || k == "mod_leveling_gear" || k == "LevelingGear" || k == "modLevelingGear" || k == "Mods.modLevelingGear" ) return "Leveling Gear";
 	if ( k == "mods" || k == "Mods" ) return "Mods";
 
 	return k;
@@ -82,7 +84,14 @@ function ModLevelingGear_GetLoc_EN(k : string) : string
 	if ( k == "Mods.LevelingGear" ) return "Leveling Gear";
 	if ( k == "LevelingGear" ) return "Leveling Gear";
 	if ( k == "mod_leveling_gear" ) return "Leveling Gear";
+
+	if ( k == "Leveling Gear" ) return "Leveling Gear";
 	if ( k == "Installed Version" ) return "Installed Version";
+	if ( k == "v1.0.24" || k == "v1.0.23" || k == "v1.0.22" || k == "v1.0.21" || k == "v1.0.20" || k == "v1.0.19" ) return "v1.0.24";
+	if ( k == "v1.0.18" ) return "v1.0.18";
+	if ( k == "v1.0.17" ) return "v1.0.17";
+	if ( k == "v1.0.16" ) return "v1.0.16";
+	if ( k == "v1.0.15" ) return "v1.0.15";
 	if ( k == "v1.0.14" ) return "v1.0.14";
 	if ( k == "v1.0.13" ) return "v1.0.13";
 	if ( k == "v1.0.13b" ) return "v1.0.13b";
@@ -136,6 +145,9 @@ function ModLevelingGear_GetLoc_EN(k : string) : string
 	if ( k == "Material" ) return "Material";
 	if ( k == "Leveling Gear" ) return "Leveling Gear";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Normalize Secondary Stats (Restore on Level-Up)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Upgrade Stash Gear (Player Chest)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Relic and Modded Gear Only (Exclude Witcher)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Upgrade Trigger: On Opening Stash Chest";
 	return "";
 }
 
@@ -201,6 +213,9 @@ function ModLevelingGear_GetLoc_TR(k : string) : string
 	if ( k == "Repair Kit" ) return "Tamir Kiti";
 	if ( k == "Material" ) return "Malzeme";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Ikincil Nitelikleri Dengele (Seviye Atlayinca Geri Yukle)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Sandık Ekipmanlarını Yükselt (Oyuncu Sandığı)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Yalnızca Relik ve Mod Eşyaları (Efsunlu Hariç)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Yükseltme Tetikleyici: Sandık Açıldığında";
 	return "";
 }
 
@@ -211,7 +226,19 @@ function ModLevelingGear_GetLoc_RU(k : string) : string
 	if ( k == "Story (Free)" ) return "Сюжет (бесплатно)";
 	if ( k == "Hardcore" ) return "Хардкор";
 	if ( k == "Purist" ) return "Пурист";
+
+	if ( k == "mlgPresetKhser" ) return "Выбор Khser";
+
+	if ( k == "mlgPresetStory" ) return "Сюжет (бесплатно)";
+
+	if ( k == "mlgPresetHardcore" ) return "Хардкор";
+
+	if ( k == "mlgPresetPurist" ) return "Пурист";
 	if ( k == "Installed Version" ) return "Установленная версия";
+	if ( k == "v1.0.23" ) return "v1.0.23";
+	if ( k == "v1.0.22" ) return "v1.0.22";
+	if ( k == "v1.0.21" ) return "v1.0.21";
+	if ( k == "v1.0.20" ) return "v1.0.20";
 	if ( k == "v1.0.12" ) return "v1.0.12";
 	if ( k == "v1.0.11" ) return "v1.0.11";
 	if ( k == "v1.0.4" ) return "v1.0.4";
@@ -265,6 +292,9 @@ function ModLevelingGear_GetLoc_RU(k : string) : string
 	if ( k == "Repair Kit" ) return "Ремонтный набор";
 	if ( k == "Material" ) return "Материал";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Нормализация вторичных характеристик (восстановление при уровне)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Улучшать снаряжение в сундуке (Тайник)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Только реликтовое и моды (без ведьмачьего)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Улучшение: при открытии сундука";
 	return "";
 }
 
@@ -330,6 +360,9 @@ function ModLevelingGear_GetLoc_PL(k : string) : string
 	if ( k == "Repair Kit" ) return "Zestaw naprawczy";
 	if ( k == "Material" ) return "Materiał";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Normalizacja statystyk dodatkowych (przywracanie z poziomem)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Ulepszaj przedmioty w skrytce (Skrzynia gracza)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Tylko przedmioty reliktowe i z modów (bez wiedźmińskich)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Ulepszanie: przy otwarciu skrytki";
 	return "";
 }
 
@@ -395,6 +428,9 @@ function ModLevelingGear_GetLoc_DE(k : string) : string
 	if ( k == "Repair Kit" ) return "Reparaturset";
 	if ( k == "Material" ) return "Material";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Sekundärwerte normalisieren (bei Stufenaufstieg wiederherstellen)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Ausrüstung in der Spielertruhe verbessern";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Nur Relikt- und Mod-Ausrüstung (ohne Hexer)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Verbesserung: Beim Öffnen der Spielertruhe";
 	return "";
 }
 
@@ -448,6 +484,9 @@ function ModLevelingGear_GetLoc_FR(k : string) : string
 	if ( k == "Repair Kit" ) return "Nécessaire de réparation";
 	if ( k == "Material" ) return "Matériau";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Normaliser les stats secondaires (restaurer lors de la montée de niveau)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Améliorer l'équipement du coffre (Réserve)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Uniquement reliques et mods (hors sorceleur)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Amélioration : à l'ouverture du coffre";
 	return "";
 }
 
@@ -501,6 +540,9 @@ function ModLevelingGear_GetLoc_ES(k : string) : string
 	if ( k == "Repair Kit" ) return "Kit de reparación";
 	if ( k == "Material" ) return "Material";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Normalizar atributos secundarios (restaurar al subir de nivel)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Mejorar equipo del alijo (Cofre del jugador)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Solo reliquias y mods (sin equipo de brujo)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Mejora: al abrir el alijo";
 	return "";
 }
 
@@ -554,6 +596,9 @@ function ModLevelingGear_GetLoc_ESMX(k : string) : string
 	if ( k == "Repair Kit" ) return "Kit de reparación";
 	if ( k == "Material" ) return "Material";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Normalizar estadísticas secundarias (restaurar al subir de nivel)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Mejorar equipo del alijo (Cofre del jugador)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Solo reliquias y mods (sin equipo de brujo)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Mejora: al abrir el alijo";
 	return "";
 }
 
@@ -607,6 +652,9 @@ function ModLevelingGear_GetLoc_IT(k : string) : string
 	if ( k == "Repair Kit" ) return "Kit di riparazione";
 	if ( k == "Material" ) return "Materiale";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Normalizza statistiche secondarie (ripristina al passaggio di livello)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Potenzia equipaggiamento nel baule (Deposito)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Solo reliquie e mod (escluso strigo)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Potenziamento: all'apertura del baule";
 	return "";
 }
 
@@ -660,18 +708,27 @@ function ModLevelingGear_GetLoc_BR(k : string) : string
 	if ( k == "Repair Kit" ) return "Kit de reparo";
 	if ( k == "Material" ) return "Material";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Normalizar atributos secundários (restaurar ao subir de nível)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Melhorar equipamento no baú (Esconderijo)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Apenas relíquias e itens de mods (sem bruxo)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Melhoria: ao abrir o baú";
 	return "";
 }
 
 function ModLevelingGear_GetLoc_ZHTW(k : string) : string
 {
 	if ( k == "Installed Version" ) return "已安裝版本";
-	if ( k == "v1.0.4" ) return "v1.0.4";
+	if ( k == "v1.0.16" || k == "v1.0.15" || k == "v1.0.14" || k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.5" || k == "v1.0.4" ) return "v1.0.16";
+	if ( k == "Preset" ) return "預設";
+	if ( k == "Khser's Choice" ) return "Khser 推薦";
+	if ( k == "Story (Free)" ) return "劇情 (免費)";
+	if ( k == "Hardcore" ) return "硬核";
+	if ( k == "Purist" ) return "純粹模式";
 	if ( k == "Mods" ) return "模組";
 	if ( k == "mods" ) return "模組";
 	if ( k == "Mods.LevelingGear" ) return "Leveling Gear";
 	if ( k == "LevelingGear" ) return "Leveling Gear";
 	if ( k == "mod_leveling_gear" ) return "Leveling Gear";
+	if ( k == "Leveling Gear" ) return "Leveling Gear";
 	if ( k == "Enable Leveling Gear" ) return "啟用裝備等級同步";
 	if ( k == "Gear Whitelist Scope" ) return "裝備同步範圍";
 	if ( k == "Exclude Aerondight (Native Stacking)" ) return "排除湖女之劍 (自帶成長機制)";
@@ -680,6 +737,10 @@ function ModLevelingGear_GetLoc_ZHTW(k : string) : string
 	if ( k == "Upgrade Trigger: At Craftsmen" ) return "升級觸發: 工匠處";
 	if ( k == "Upgrade Trigger: At Craftsmen (Dialogue)" ) return "升級觸發: 與工匠對話";
 	if ( k == "Craftsman Upgrade Mode" ) return "工匠升級模式";
+	if ( k == "Craftsman Durability Repair Action" ) return "工匠耐久修理動作";
+	if ( k == "Durability Repair Only (No Leveling)" ) return "僅修復耐久 (不升級)";
+	if ( k == "Repair + Level Tempering (Combined)" ) return "修復 + 等級淬鍊 (組合)";
+	if ( k == "Temper Only When Pristine (100% Durability)" ) return "僅在完好 (100%耐久) 時淬鍊";
 	if ( k == "Upgrade Bagged Inventory Gear" ) return "同時升級背包中的裝備";
 	if ( k == "Upgrade Trigger: Via Field Maintenance Kit" ) return "升級觸發: 使用野外修理工具包";
 	if ( k == "Allow Field Kit on Pristine (100%) Gear" ) return "允許在滿耐久度(100%)裝備上使用工具包";
@@ -713,18 +774,27 @@ function ModLevelingGear_GetLoc_ZHTW(k : string) : string
 	if ( k == "Repair Kit" ) return "修理工具包";
 	if ( k == "Material" ) return "材料";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "次要屬性平衡歸一化 (升級時逐步恢復)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "升級儲物箱裝備 (玩家儲物箱)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "僅限遺物及模組裝備 (排除狩魔獵人套裝)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "升級觸發: 打開儲物箱時";
 	return "";
 }
 
 function ModLevelingGear_GetLoc_ZHCN(k : string) : string
 {
 	if ( k == "Installed Version" ) return "已安装版本";
-	if ( k == "v1.0.4" ) return "v1.0.4";
+	if ( k == "v1.0.16" || k == "v1.0.15" || k == "v1.0.14" || k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.5" || k == "v1.0.4" ) return "v1.0.16";
+	if ( k == "Preset" ) return "预设";
+	if ( k == "Khser's Choice" ) return "Khser 推荐";
+	if ( k == "Story (Free)" ) return "剧情 (免费)";
+	if ( k == "Hardcore" ) return "硬核";
+	if ( k == "Purist" ) return "纯粹模式";
 	if ( k == "Mods" ) return "模组";
 	if ( k == "mods" ) return "模组";
 	if ( k == "Mods.LevelingGear" ) return "Leveling Gear";
 	if ( k == "LevelingGear" ) return "Leveling Gear";
 	if ( k == "mod_leveling_gear" ) return "Leveling Gear";
+	if ( k == "Leveling Gear" ) return "Leveling Gear";
 	if ( k == "Enable Leveling Gear" ) return "启用装备等级同步";
 	if ( k == "Gear Whitelist Scope" ) return "装备同步范围";
 	if ( k == "Exclude Aerondight (Native Stacking)" ) return "排除湖女之剑 (自带成长机制)";
@@ -733,6 +803,10 @@ function ModLevelingGear_GetLoc_ZHCN(k : string) : string
 	if ( k == "Upgrade Trigger: At Craftsmen" ) return "升级触发: 工匠处";
 	if ( k == "Upgrade Trigger: At Craftsmen (Dialogue)" ) return "升级触发: 与工匠对话";
 	if ( k == "Craftsman Upgrade Mode" ) return "工匠升级模式";
+	if ( k == "Craftsman Durability Repair Action" ) return "工匠耐久修理动作";
+	if ( k == "Durability Repair Only (No Leveling)" ) return "仅修复耐久 (不升级)";
+	if ( k == "Repair + Level Tempering (Combined)" ) return "修复 + 等级淬炼 (组合)";
+	if ( k == "Temper Only When Pristine (100% Durability)" ) return "仅在完好 (100%耐久) 时淬炼";
 	if ( k == "Upgrade Bagged Inventory Gear" ) return "同时升级背包中的装备";
 	if ( k == "Upgrade Trigger: Via Field Maintenance Kit" ) return "升级触发: 使用野外修理工具包";
 	if ( k == "Allow Field Kit on Pristine (100%) Gear" ) return "允许在满耐久度(100%)装备上使用工具包";
@@ -766,6 +840,9 @@ function ModLevelingGear_GetLoc_ZHCN(k : string) : string
 	if ( k == "Repair Kit" ) return "修理工具包";
 	if ( k == "Material" ) return "材料";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "次要属性平衡归一化 (升级时逐步恢复)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "升级储物箱装备 (玩家储物箱)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "仅限遗物及模组装备 (排除猎魔人套装)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "升级触发: 打开储物箱时";
 	return "";
 }
 
@@ -819,6 +896,9 @@ function ModLevelingGear_GetLoc_JP(k : string) : string
 	if ( k == "Repair Kit" ) return "修理道具";
 	if ( k == "Material" ) return "素材";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "サブステータスの正規化 (レベルアップ時に徐々に復元)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "保管箱の装備を強化（収納箱）";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "レリックとMOD装備のみ（ウィッチャー装備除く）";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "強化トリガー：収納箱を開けた時";
 	return "";
 }
 
@@ -872,6 +952,9 @@ function ModLevelingGear_GetLoc_KR(k : string) : string
 	if ( k == "Repair Kit" ) return "수리 도구";
 	if ( k == "Material" ) return "재료";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "보조 능력치 정규화 (레벨업 시 점진적 복구)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "보관함 장비 강화 (플레이어 상자)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "유물 및 모드 장비만 (위쳐 장비 제외)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "강화 트리거: 보관함을 열 때";
 	return "";
 }
 
@@ -925,6 +1008,9 @@ function ModLevelingGear_GetLoc_CZ(k : string) : string
 	if ( k == "Repair Kit" ) return "Opravna sada";
 	if ( k == "Material" ) return "Material";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Normalizovat sekundární statistiky (obnovit při postupu na úroveň)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Vylepšovat vybavení v truhle (Úschovna)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Pouze reliktní a modifikované vybavení (bez zaklínačského)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Vylepšení: Při otevření truhly";
 	return "";
 }
 
@@ -978,6 +1064,9 @@ function ModLevelingGear_GetLoc_HU(k : string) : string
 	if ( k == "Repair Kit" ) return "Javitokeszlet";
 	if ( k == "Material" ) return "Alapanyag";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Másodlagos statisztikák normalizálása (szintlépéskor visszaáll)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Ládában lévő felszerelés fejlesztése (Játékos ládája)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Csak ereklye és mod felszerelés (vaják kizárva)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Fejlesztés: Láda kinyitásakor";
 	return "";
 }
 
@@ -1031,6 +1120,9 @@ function ModLevelingGear_GetLoc_AR(k : string) : string
 	if ( k == "Repair Kit" ) return "عدة إصلاح";
 	if ( k == "Material" ) return "مادة";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "موازنة الإحصائيات الثانوية (استعادة مع زيادة المستوى)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "ترقية عتاد الصندوق (صندوق اللاعب)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "عتاد الآثار والمودات فقط (استثناء الويتشر)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "ترقية: عند فتح الصندوق";
 	return "";
 }
 
@@ -1048,6 +1140,8 @@ function ModLevelingGear_GetLoc_UA(k : string) : string
 	if ( k == "mod_leveling_gear" ) return "Спорядження за рівнем";
 	if ( k == "Leveling Gear" ) return "Спорядження за рівнем";
 	if ( k == "Installed Version" ) return "Встановлена версія";
+	if ( k == "v1.0.16" ) return "v1.0.16";
+	if ( k == "v1.0.15" ) return "v1.0.15";
 	if ( k == "v1.0.14" ) return "v1.0.14";
 	if ( k == "v1.0.13" ) return "v1.0.13";
 	if ( k == "v1.0.13b" ) return "v1.0.13b";
@@ -1100,12 +1194,15 @@ function ModLevelingGear_GetLoc_UA(k : string) : string
 	if ( k == "Repair Kit" ) return "Набір для ремонту";
 	if ( k == "Material" ) return "Матеріал";
 	if ( k == "Normalize Secondary Stats (Restore on Level-Up)" ) return "Нормалізувати додаткові характеристики (відновлювати при підвищенні рівня)";
+	if ( k == "Upgrade Stash Gear (Player Chest)" ) return "Покращувати спорядження в скрині (Схованка)";
+	if ( k == "Relic and Modded Gear Only (Exclude Witcher)" ) return "Тільки реліктові та модифікації (без відьмацького)";
+	if ( k == "Upgrade Trigger: On Opening Stash Chest" ) return "Покращення: при відкритті скрині";
 	return "";
 }
 
 function ModLevelingGear_GetLoc_ZH(k : string) : string
 {
-	return ModLevelingGear_GetLoc_ZHTW(k);
+	return ModLevelingGear_GetLoc_ZHCN(k);
 }
 
 function ModLevelingGear_GetLocalizedString(key : string) : string
@@ -1116,37 +1213,37 @@ function ModLevelingGear_GetLocalizedString(key : string) : string
 	var res : string;
 
 	k = ModLevelingGear_NormalizeKey(key);
-	if ( k == "v1.0.14" || k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.10b" || k == "v1.0.7b" || k == "v1.0.7" || k == "v1.0.6" || k == "v1.0.5" || k == "v1.0.4" )
+	if ( k == "v1.0.23" || k == "v1.0.22" || k == "v1.0.21" || k == "v1.0.20" || k == "v1.0.19" || k == "v1.0.18" || k == "v1.0.17" || k == "v1.0.16" || k == "v1.0.15" || k == "v1.0.14" || k == "v1.0.13" || k == "v1.0.13b" || k == "v1.0.12" || k == "v1.0.11" || k == "v1.0.10b" || k == "v1.0.7b" || k == "v1.0.7" || k == "v1.0.6" || k == "v1.0.5" || k == "v1.0.4" )
 	{
-		return "v1.0.14";
+		return "v1.0.23";
 	}
 	theGame.GetGameLanguageName(audioLang, textLang);
 	lang = StrUpper(textLang);
 
-	if ( lang == "TR" || StrBeginsWith(lang, "TUR") ) res = ModLevelingGear_GetLoc_TR(k);
-	else if ( lang == "RU" || StrBeginsWith(lang, "RUS") ) res = ModLevelingGear_GetLoc_RU(k);
-	else if ( lang == "PL" || StrBeginsWith(lang, "POL") ) res = ModLevelingGear_GetLoc_PL(k);
-	else if ( lang == "DE" || StrBeginsWith(lang, "GER") ) res = ModLevelingGear_GetLoc_DE(k);
-	else if ( lang == "FR" || StrBeginsWith(lang, "FRE") ) res = ModLevelingGear_GetLoc_FR(k);
-	else if ( lang == "ES" || StrBeginsWith(lang, "SPA") ) res = ModLevelingGear_GetLoc_ES(k);
-	else if ( lang == "ESMX" ) res = ModLevelingGear_GetLoc_ESMX(k);
-	else if ( lang == "IT" || StrBeginsWith(lang, "ITA") ) res = ModLevelingGear_GetLoc_IT(k);
-	else if ( lang == "BR" || lang == "PT" || StrBeginsWith(lang, "POR") ) res = ModLevelingGear_GetLoc_BR(k);
-	else if ( StrBeginsWith(lang, "ZH-TW") || StrBeginsWith(lang, "ZH_TW") || lang == "TW" || StrContains(lang, "TCHIN") ) res = ModLevelingGear_GetLoc_ZHTW(k);
-	else if ( StrBeginsWith(lang, "ZH") || StrBeginsWith(lang, "CN") || StrContains(lang, "CHIN") ) res = ModLevelingGear_GetLoc_ZHCN(k);
-	else if ( lang == "JP" || StrBeginsWith(lang, "JAP") ) res = ModLevelingGear_GetLoc_JP(k);
-	else if ( lang == "KR" || StrBeginsWith(lang, "KOR") ) res = ModLevelingGear_GetLoc_KR(k);
-	else if ( lang == "CZ" || StrBeginsWith(lang, "CZE") ) res = ModLevelingGear_GetLoc_CZ(k);
-	else if ( lang == "HU" || StrBeginsWith(lang, "HUN") ) res = ModLevelingGear_GetLoc_HU(k);
-	else if ( lang == "AR" || StrBeginsWith(lang, "ARA") ) res = ModLevelingGear_GetLoc_AR(k);
-	else if ( lang == "UA" || lang == "UK" || StrBeginsWith(lang, "UKR") ) res = ModLevelingGear_GetLoc_UA(k);
+	if ( lang == "TR" || StrBeginsWith(lang, "TUR") || StrBeginsWith(lang, "TR") ) res = ModLevelingGear_GetLoc_TR(k);
+	else if ( lang == "RU" || StrBeginsWith(lang, "RUS") || StrBeginsWith(lang, "RU") ) res = ModLevelingGear_GetLoc_RU(k);
+	else if ( lang == "PL" || StrBeginsWith(lang, "POL") || StrBeginsWith(lang, "PL") ) res = ModLevelingGear_GetLoc_PL(k);
+	else if ( lang == "DE" || StrBeginsWith(lang, "GER") || StrBeginsWith(lang, "DE") ) res = ModLevelingGear_GetLoc_DE(k);
+	else if ( lang == "FR" || StrBeginsWith(lang, "FRE") || StrBeginsWith(lang, "FR") ) res = ModLevelingGear_GetLoc_FR(k);
+	else if ( lang == "ES" || StrBeginsWith(lang, "SPA") || StrBeginsWith(lang, "ES") ) res = ModLevelingGear_GetLoc_ES(k);
+	else if ( lang == "ESMX" || StrBeginsWith(lang, "ES-MX") || StrBeginsWith(lang, "ES_MX") ) res = ModLevelingGear_GetLoc_ESMX(k);
+	else if ( lang == "IT" || StrBeginsWith(lang, "ITA") || StrBeginsWith(lang, "IT") ) res = ModLevelingGear_GetLoc_IT(k);
+	else if ( lang == "BR" || lang == "PT" || StrBeginsWith(lang, "POR") || StrBeginsWith(lang, "PT") || StrBeginsWith(lang, "BR") ) res = ModLevelingGear_GetLoc_BR(k);
+	else if ( lang == "TW" || lang == "ZHT" || lang == "CHT" || lang == "ZHTW" || StrBeginsWith(lang, "ZH-TW") || StrBeginsWith(lang, "ZH_TW") || StrBeginsWith(lang, "ZH-HK") || StrBeginsWith(lang, "ZH_HK") || StrContains(lang, "TCHIN") || StrContains(lang, "HANT") ) res = ModLevelingGear_GetLoc_ZHTW(k);
+	else if ( lang == "ZH" || lang == "CN" || StrBeginsWith(lang, "CN") || lang == "ZHS" || lang == "CHS" || lang == "ZHCN" || StrBeginsWith(lang, "ZH-CN") || StrBeginsWith(lang, "ZH_CN") || StrContains(lang, "CHIN") || StrContains(lang, "SCHIN") || StrContains(lang, "HANS") ) res = ModLevelingGear_GetLoc_ZHCN(k);
+	else if ( lang == "JP" || StrBeginsWith(lang, "JAP") || StrBeginsWith(lang, "JA") || StrBeginsWith(lang, "JP") ) res = ModLevelingGear_GetLoc_JP(k);
+	else if ( lang == "KR" || StrBeginsWith(lang, "KOR") || StrBeginsWith(lang, "KO") || StrBeginsWith(lang, "KR") ) res = ModLevelingGear_GetLoc_KR(k);
+	else if ( lang == "CZ" || StrBeginsWith(lang, "CZE") || StrBeginsWith(lang, "CS") || StrBeginsWith(lang, "CZ") ) res = ModLevelingGear_GetLoc_CZ(k);
+	else if ( lang == "HU" || StrBeginsWith(lang, "HUN") || StrBeginsWith(lang, "HU") ) res = ModLevelingGear_GetLoc_HU(k);
+	else if ( lang == "AR" || StrBeginsWith(lang, "ARA") || StrBeginsWith(lang, "AR") ) res = ModLevelingGear_GetLoc_AR(k);
+	else if ( lang == "UA" || lang == "UK" || StrBeginsWith(lang, "UKR") || StrBeginsWith(lang, "UA") || StrBeginsWith(lang, "UK") ) res = ModLevelingGear_GetLoc_UA(k);
 
 	// Chinese dialect cross-fallbacks
-	if ( (StrBeginsWith(lang, "ZH-TW") || StrBeginsWith(lang, "ZH_TW") || lang == "TW" || StrContains(lang, "TCHIN")) && res == "" )
+	if ( (lang == "TW" || lang == "ZHT" || lang == "CHT" || lang == "ZHTW" || StrBeginsWith(lang, "ZH-TW") || StrBeginsWith(lang, "ZH_TW") || StrBeginsWith(lang, "ZH-HK") || StrBeginsWith(lang, "ZH_HK") || StrContains(lang, "TCHIN") || StrContains(lang, "HANT")) && res == "" )
 	{
 		res = ModLevelingGear_GetLoc_ZHCN(k);
 	}
-	else if ( (StrBeginsWith(lang, "ZH") || StrBeginsWith(lang, "CN") || StrContains(lang, "CHIN")) && res == "" )
+	else if ( (lang == "ZH" || lang == "CN" || StrBeginsWith(lang, "CN") || lang == "ZHS" || lang == "CHS" || lang == "ZHCN" || StrBeginsWith(lang, "ZH-CN") || StrBeginsWith(lang, "ZH_CN") || StrContains(lang, "CHIN") || StrContains(lang, "SCHIN") || StrContains(lang, "HANS")) && res == "" )
 	{
 		res = ModLevelingGear_GetLoc_ZHTW(k);
 	}
@@ -1160,52 +1257,8 @@ function ModLevelingGear_GetLocalizedString(key : string) : string
 	return res;
 }
 
-@wrapMethod
-function inGameMenu_TryLocalize(key : string) : string
+function ModLevelingGear_GetLoc(k : string) : string
 {
-	var modLoc : string;
-
-	// Prioritize native script localization for Leveling Gear & Mods menu
-	modLoc = ModLevelingGear_GetLocalizedString(key);
-	if ( modLoc != "" )
-	{
-		return modLoc;
-	}
-
-	return wrappedMethod(key);
+	return ModLevelingGear_GetLocalizedString(k);
 }
 
-@wrapMethod
-function IngameMenu_FetchAndGenerateGroupMenuObject(flashStorageUtility : CScriptedFlashValueStorage, displayNamePrefix:string, groupDisplayName:string, rootFlashArray:CScriptedFlashArray, out optionParentArray:CScriptedFlashArray) : CScriptedFlashObject
-{
-	var obj : CScriptedFlashObject;
-	var modsObj : CScriptedFlashObject;
-	var modTitle : string;
-	var currentLabel : string;
-
-	obj = wrappedMethod(flashStorageUtility, displayNamePrefix, groupDisplayName, rootFlashArray, optionParentArray);
-
-	// Ensure top-level 'MODS' item is labeled cleanly across all languages
-	if ( rootFlashArray && GetObjectFromArrayWithLabel(rootFlashArray, "id", "Mods", modsObj) )
-	{
-		currentLabel = modsObj.GetMemberFlashString("label");
-		if ( currentLabel == "" || currentLabel == "S" || StrLen(currentLabel) <= 2 || StrBeginsWith(currentLabel, "panel_") || StrBeginsWith(currentLabel, "##") )
-		{
-			modTitle = ModLevelingGear_GetLocalizedString("Mods");
-			if ( modTitle == "" ) modTitle = "MODS";
-			modsObj.SetMemberFlashString("label", modTitle);
-			modsObj.SetMemberFlashString("listTitle", modTitle);
-		}
-	}
-
-	// Ensure Leveling Gear sub-category is properly labeled
-	if ( obj && (groupDisplayName == "Mods.LevelingGear" || groupDisplayName == "LevelingGear") )
-	{
-		modTitle = ModLevelingGear_GetLocalizedString("LevelingGear");
-		if ( modTitle == "" ) modTitle = "Leveling Gear";
-		obj.SetMemberFlashString("label", modTitle + " (v1.0.14)");
-		obj.SetMemberFlashString("listTitle", modTitle + " (v1.0.14)");
-	}
-
-	return obj;
-}
